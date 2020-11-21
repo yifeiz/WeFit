@@ -52,7 +52,6 @@ class PoseNet extends Component {
         quantBytes: 2,
       });
     } catch (error) {
-      console.log(error);
       throw new Error("PoseNet failed to load");
     } finally {
       setTimeout(() => {
@@ -77,7 +76,7 @@ class PoseNet extends Component {
     const stream = await navigator.mediaDevices.getUserMedia({
       audio: false,
       video: {
-        facingMode: "user",
+
         width: videoWidth,
         height: videoHeight,
       },
@@ -168,6 +167,11 @@ class PoseNet extends Component {
       poses.forEach(({ score, keypoints }) => {
         if (score >= minPoseConfidence) {
           if (showPoints) {
+            if(keypoints){
+              for(let point of keypoints){
+                point.position.x = 900-point.position.x;
+              }
+            }
             drawKeyPoints(
               keypoints,
               minPartConfidence,
