@@ -1,0 +1,21 @@
+{
+  "name": "wefit",
+  "version": "1.0.0",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yifei7zhang/WeFit.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yifei7zhang/WeFit/issues"
+  },
+  "homepage": "https://github.com/yifei7zhang/WeFit#readme",
+  "dependencies": {
+    "husky": "^4.3.0",
+    "lerna": "^3.22.1",
+    "lint-staged": "^10.5.1",
+    "prettier": "^2.2.0"
+  }
+}
