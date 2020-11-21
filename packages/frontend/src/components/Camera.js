@@ -308,8 +308,8 @@ class PoseNet extends Component {
           this.checkSquat();
       }
       else if(this.isWithinInterval(pose,this.situpPos1)){
-        this.checkSquat();
-    }
+        this.checkSitup();
+      }
     }
   }
 
@@ -343,6 +343,22 @@ class PoseNet extends Component {
         }
     }
     this.squats++;
+  }
+
+  async checkSitup(){
+    while(true){
+      const pose = await this.getPose()
+      if(this.isWithinInterval(pose,this.situpPos1)){
+        break;
+      }
+    }
+    while(true){
+      const pose = await this.getPose()
+        if(this.isWithinInterval(pose,this.situpPos2)){
+            break;
+        }
+    }
+    this.situps++;
   }
 
   isWithinInterval(pose1, pose2){
