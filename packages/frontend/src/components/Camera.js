@@ -7,7 +7,7 @@ class PoseNet extends Component {
   static defaultProps = {
     videoWidth: 900,
     videoHeight: 700,
-    flipHorizontal: false,
+    flipHorizontal: true,
     algorithm: "single-pose",
     showVideo: true,
     showSkeleton: true,
@@ -143,12 +143,9 @@ class PoseNet extends Component {
         }
         case "single-pose":
         default: {
-          const pose = await posenetModel.estimateSinglePose(
-            video,
-            imageScaleFactor,
+          const pose = await posenetModel.estimateSinglePose(video, {
             flipHorizontal,
-            outputStride
-          );
+          });
           poses.push(pose);
           break;
         }
