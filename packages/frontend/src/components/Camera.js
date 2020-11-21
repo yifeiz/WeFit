@@ -29,7 +29,7 @@ class PoseNet extends Component {
 
   constructor(props) {
     super(props, PoseNet.defaultProps);
-    this.state = {timer:0, isTimer:false};
+    this.state = { timer: 0, isTimer: false };
   }
 
   getCanvas = elem => {
@@ -39,7 +39,7 @@ class PoseNet extends Component {
   getVideo = elem => {
     this.video = elem;
   };
-  
+
   async componentDidMount() {
     try {
       await this.setupCamera();
@@ -97,39 +97,36 @@ class PoseNet extends Component {
       };
     });
   }
-  logPos(){
+  logPos() {
     console.log('aiyahh');
   }
 
-  async startTimer(){
-    this.setState({timer:5, isTimer:true});
-    for(let i = 4; i>=0;i--){
+  async startTimer() {
+    this.setState({ timer: 5, isTimer: true });
+
+    for (let i = 4; i >= 0; i--) {
       await this.timeout(1000);
-      this.setState({timer:i, isTimer:true});
+      this.setState({ timer: i, isTimer: true });
       console.log(this.state)
     }
-    this.setState({timer:0, isTimer:false});
+
+    this.setState({ timer: 0, isTimer: false });
     //call capture function
     // this.pushupPos1 = this.detectPose();
+
     const {
       algorithm,
       imageScaleFactor,
       flipHorizontal,
       outputStride,
-      minPoseConfidence,
       minPartConfidence,
       maxPoseDetections,
       nmsRadius,
-      videoWidth,
-      videoHeight,
-      showVideo,
-      showPoints,
-      showSkeleton,
-      skeletonColor,
-      skeletonLineWidth,
     } = this.props;
+
     const posenetModel = this.posenet;
     const video = this.video;
+
     const findPoseDetectionFrame = async () => {
       let poses = [];
 
@@ -165,7 +162,7 @@ class PoseNet extends Component {
   }
 
   async timeout(delay) {
-    return new Promise( res => setTimeout(res, delay) );
+    return new Promise(res => setTimeout(res, delay));
   }
   detectPose() {
     const { videoWidth, videoHeight } = this.props;
@@ -269,7 +266,7 @@ class PoseNet extends Component {
         <div>
           <video id="videoNoShow" playsInline ref={this.getVideo} />
           <canvas className="webcam" ref={this.getCanvas} /><br></br>
-          <button onClick={()=>this.startTimer()}>
+          <button onClick={() => this.startTimer()}>
             start timer for pushup up
           </button>
           {this.state.isTimer && <p>time: {this.state.timer}</p>}
