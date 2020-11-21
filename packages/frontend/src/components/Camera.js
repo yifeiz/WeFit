@@ -8,6 +8,9 @@ class PoseNet extends Component {
   pushupPos2 = null;
   squatPos1 = null;
   squatPos2 = null;
+  pushups = 0;
+  squats = 0;
+  situps = 0;
   static defaultProps = {
     videoWidth: 900,
     videoHeight: 700,
@@ -157,10 +160,56 @@ class PoseNet extends Component {
       return poses;
     };
 
-    this.pushupPos1 = await findPoseDetectionFrame();
+    this.pushupPos1 = await this.getPose();
     console.log(this.pushupPos1)
   }
+  
 
+  async getPose(){
+    const {
+      algorithm,
+      imageScaleFactor,
+      flipHorizontal,
+      outputStride,
+      minPartConfidence,
+      maxPoseDetections,
+      nmsRadius,
+    } = this.props;
+
+    const posenetModel = this.posenet;
+    const video = this.video;
+
+    const findPoseDetectionFrame = async () => {
+      let poses = [];
+
+      switch (algorithm) {
+        case "multi-pose": {
+          poses = await posenetModel.estimateMultiplePoses(
+            video,
+            imageScaleFactor,
+            flipHorizontal,
+            outputStride,
+            maxPoseDetections,
+            minPartConfidence,
+            nmsRadius
+          );
+          break;
+        }
+        case "single-pose":
+        default: {
+          const pose = await posenetModel.estimateSinglePose(video, {
+            flipHorizontal
+          });
+
+          poses.push(pose);
+          break;
+        }
+      }
+
+      return poses;
+    };
+    return await findPoseDetectionFrame();
+  }
   async timeout(delay) {
     return new Promise(res => setTimeout(res, delay));
   }
@@ -259,6 +308,68 @@ class PoseNet extends Component {
     };
     findPoseDetectionFrame();
   }
+
+
+  async main(){
+    while(true){
+      const pose = await this.getPose()
+      if(this.isWithinInterval(pose,this.pushupPos1)){
+          this.checkPushup();
+      }
+      else if(this.isWithinInterval(pose,this.squatPos1)){
+          this.checkSquat();
+      }
+      else if(this.isWithinInterval(pose,this.situpPos1)){
+        this.checkSquat();
+    }
+    }
+  }
+
+  async checkPushup(){
+    while(true){
+      const pose = await this.getPose()
+      if(this.isWithinInterval(pose,this.pushupPos2)){
+        break;
+      }
+    }
+    while(true){
+      const pose = await this.getPose()
+        if(this.isWithinInterval(pose,this.pushupPos1)){
+            break;
+        }
+    }
+    this.pushups++;
+  }
+
+  async checkSquat(){
+    while(true){
+      const pose = await this.getPose()
+      if(this.isWithinInterval(pose,this.squatPos1)){
+        break;
+      }
+    }
+    while(true){
+      const pose = await this.getPose()
+        if(this.isWithinInterval(pose,this.squatPos2)){
+            break;
+        }
+    }
+    this.squats++;
+  }
+
+  isWithinInterval(pose1, pose2){
+    const TOLERANCE = 50;
+    const CONFIDENCE = 0.7;
+    for(let i = 0; i < pose1[0].keypoints.length;i++){
+      if(pose1[0].keypoints[i].score > CONFIDENCE && pose2[0].keypoints[i].score > CONFIDENCE){
+        if(Math.abs(pose1[0].keypoints[i].position.x - pose2[0].keypoints[i].position.x) > TOLERANCE && Math.abs(pose1[0].keypoints[i].position.y - pose2[0].keypoints[i].position.y) > TOLERANCE){
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
 
   render() {
     return (
