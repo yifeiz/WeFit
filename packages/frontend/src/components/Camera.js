@@ -29,6 +29,7 @@ class PoseNet extends Component {
 
   constructor(props) {
     super(props, PoseNet.defaultProps);
+    this.state = {timer:0, isTimer:false};
   }
 
   getCanvas = elem => {
@@ -98,6 +99,73 @@ class PoseNet extends Component {
   }
   logPos(){
     console.log('aiyahh');
+  }
+
+  async startTimer(){
+    this.setState({timer:5, isTimer:true});
+    for(let i = 4; i>=0;i--){
+      await this.timeout(1000);
+      this.setState({timer:i, isTimer:true});
+      console.log(this.state)
+    }
+    this.setState({timer:0, isTimer:false});
+    //call capture function
+    // this.pushupPos1 = this.detectPose();
+    const {
+      algorithm,
+      imageScaleFactor,
+      flipHorizontal,
+      outputStride,
+      minPoseConfidence,
+      minPartConfidence,
+      maxPoseDetections,
+      nmsRadius,
+      videoWidth,
+      videoHeight,
+      showVideo,
+      showPoints,
+      showSkeleton,
+      skeletonColor,
+      skeletonLineWidth,
+    } = this.props;
+    const posenetModel = this.posenet;
+    const video = this.video;
+    const findPoseDetectionFrame = async () => {
+      let poses = [];
+
+      switch (algorithm) {
+        case "multi-pose": {
+          poses = await posenetModel.estimateMultiplePoses(
+            video,
+            imageScaleFactor,
+            flipHorizontal,
+            outputStride,
+            maxPoseDetections,
+            minPartConfidence,
+            nmsRadius
+          );
+          break;
+        }
+        case "single-pose":
+        default: {
+          const pose = await posenetModel.estimateSinglePose(video, {
+            flipHorizontal
+          });
+
+          poses.push(pose);
+          break;
+        }
+      }
+
+      return poses;
+    };
+
+    this.pushupPos1 = await findPoseDetectionFrame();
+    console.log(this.pushupPos1)
+  }
+
+  async timeout(delay) {
+    return new Promise( res => setTimeout(res, delay) );
   }
   detectPose() {
     const { videoWidth, videoHeight } = this.props;
@@ -200,10 +268,11 @@ class PoseNet extends Component {
       <div>
         <div>
           <video id="videoNoShow" playsInline ref={this.getVideo} />
-          <canvas className="webcam" ref={this.getCanvas} />
-          <button onClick={this.logPos}>
-            log
+          <canvas className="webcam" ref={this.getCanvas} /><br></br>
+          <button onClick={()=>this.startTimer()}>
+            start timer for pushup up
           </button>
+          {this.state.isTimer && <p>time: {this.state.timer}</p>}
         </div>
       </div>
     );
