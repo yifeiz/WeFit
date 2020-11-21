@@ -2,13 +2,13 @@ import { drawKeyPoints, drawSkeleton } from "./utils";
 import React, { Component } from "react";
 import * as posenet from "@tensorflow-models/posenet";
 import "@tensorflow/tfjs-backend-webgl";
+import CanvasContainer from "./CanvasContainer";
 
 class PoseNet extends Component {
   static defaultProps = {
     videoWidth: 900,
     videoHeight: 700,
     flipHorizontal: true,
-    algorithm: "single-pose",
     showVideo: true,
     showSkeleton: true,
     showPoints: true,
@@ -18,7 +18,7 @@ class PoseNet extends Component {
     nmsRadius: 20,
     outputStride: 16,
     imageScaleFactor: 0.5,
-    skeletonColor: "#ffadea",
+    skeletonColor: "#37c6ff",
     skeletonLineWidth: 6,
     loadingText: "Loading...please be patient...",
   };
@@ -53,10 +53,6 @@ class PoseNet extends Component {
       });
     } catch (error) {
       throw new Error("PoseNet failed to load");
-    } finally {
-      setTimeout(() => {
-        this.setState({ loading: false });
-      }, 200);
     }
 
     this.detectPose();
@@ -76,7 +72,6 @@ class PoseNet extends Component {
     const stream = await navigator.mediaDevices.getUserMedia({
       audio: false,
       video: {
-
         width: videoWidth,
         height: videoHeight,
       },
@@ -105,7 +100,6 @@ class PoseNet extends Component {
 
   poseDetectionFrame(canvasContext) {
     const {
-      algorithm,
       imageScaleFactor,
       flipHorizontal,
       outputStride,
@@ -128,28 +122,10 @@ class PoseNet extends Component {
     const findPoseDetectionFrame = async () => {
       let poses = [];
 
-      switch (algorithm) {
-        case "multi-pose": {
-          poses = await posenetModel.estimateMultiplePoses(
-            video,
-            imageScaleFactor,
-            flipHorizontal,
-            outputStride,
-            maxPoseDetections,
-            minPartConfidence,
-            nmsRadius
-          );
-          break;
-        }
-        case "single-pose":
-        default: {
-          const pose = await posenetModel.estimateSinglePose(video, {
-            flipHorizontal,
-          });
-          poses.push(pose);
-          break;
-        }
-      }
+      const pose = await posenetModel.estimateSinglePose(video, {
+        flipHorizontal,
+      });
+      poses.push(pose);
 
       canvasContext.clearRect(0, 0, videoWidth, videoHeight);
 
@@ -190,10 +166,8 @@ class PoseNet extends Component {
   render() {
     return (
       <div>
-        <div>
-          <video id="videoNoShow" playsInline ref={this.getVideo} />
-          <canvas className="webcam" ref={this.getCanvas} />
-        </div>
+        <video id="videoNoShow" playsInline ref={this.getVideo} />
+        <CanvasContainer getCanvas={this.getCanvas} />
       </div>
     );
   }
