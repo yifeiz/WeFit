@@ -295,13 +295,13 @@ class PoseNet extends Component {
     while(true){
       const pose = await this.getPose()
       if(this.isWithinInterval(pose,this.pushupPos1)){
-          this.checkPushup();
+          await this.checkPushup();
       }
       else if(this.isWithinInterval(pose,this.squatPos1)){
-          this.checkSquat();
+          await this.checkSquat();
       }
       else if(this.isWithinInterval(pose,this.situpPos1)){
-        this.checkSitup();
+          await this.checkSitup();
       }
     }
   }
@@ -320,6 +320,7 @@ class PoseNet extends Component {
         }
     }
     this.setState({pushups:this.state.pushups+1});
+    return;
   }
 
   async checkSquat(){
@@ -355,10 +356,10 @@ class PoseNet extends Component {
   }
 
   isWithinInterval(pose1, pose2){
-    const TOLERANCE = 50;
-    const CONFIDENCE = 0.7;
+    const TOLERANCE = 30;
+    const CONFIDENCE = 0.8;
     for(let i = 0; i < pose1[0].keypoints.length;i++){
-      if(pose1[0].keypoints[i].score > CONFIDENCE && pose2[0].keypoints[i].score > CONFIDENCE){
+      if(pose2[0].keypoints[i].score > CONFIDENCE){
         if(Math.abs(pose1[0].keypoints[i].position.x - pose2[0].keypoints[i].position.x) > TOLERANCE && Math.abs(pose1[0].keypoints[i].position.y - pose2[0].keypoints[i].position.y) > TOLERANCE){
           return false;
         }
