@@ -8,9 +8,6 @@ class PoseNet extends Component {
   pushupPos2 = null;
   squatPos1 = null;
   squatPos2 = null;
-  pushups = 0;
-  squats = 0;
-  situps = 0;
   situpPos1 = null;
   situpPos2 = null;
   static defaultProps = {
@@ -37,7 +34,10 @@ class PoseNet extends Component {
     this.state = {
       timer: 0,
       isTimer: false,
-      label: ""
+      label: "",
+      situps:0,
+      squats:0,
+      pushups:0,
     };
   }
 
@@ -142,14 +142,7 @@ class PoseNet extends Component {
     // remove the label
     this.setState({ label: "" });
 
-    console.log({
-      "pup": this.pushupPos1,
-      "pdown": this.pushupPos2,
-      "squp": this.squatPos1,
-      "sqdown": this.squatPos2,
-      "situp": this.situpPos1,
-      "sitdown": this.situpPos2
-    })
+    await this.main();
   }
   
 
@@ -302,13 +295,13 @@ class PoseNet extends Component {
     while(true){
       const pose = await this.getPose()
       if(this.isWithinInterval(pose,this.pushupPos1)){
-          this.checkPushup();
+          await this.checkPushup();
       }
       else if(this.isWithinInterval(pose,this.squatPos1)){
-          this.checkSquat();
+          await this.checkSquat();
       }
       else if(this.isWithinInterval(pose,this.situpPos1)){
-        this.checkSitup();
+          await this.checkSitup();
       }
     }
   }
@@ -326,7 +319,8 @@ class PoseNet extends Component {
             break;
         }
     }
-    this.pushups++;
+    this.setState({pushups:this.state.pushups+1});
+    return;
   }
 
   async checkSquat(){
@@ -342,7 +336,7 @@ class PoseNet extends Component {
             break;
         }
     }
-    this.squats++;
+    this.setState({squats:this.state.squats+1});
   }
 
   async checkSitup(){
@@ -358,14 +352,14 @@ class PoseNet extends Component {
             break;
         }
     }
-    this.situps++;
+    this.setState({situps:this.state.situps+1});
   }
 
   isWithinInterval(pose1, pose2){
-    const TOLERANCE = 50;
-    const CONFIDENCE = 0.7;
+    const TOLERANCE = 30;
+    const CONFIDENCE = 0.8;
     for(let i = 0; i < pose1[0].keypoints.length;i++){
-      if(pose1[0].keypoints[i].score > CONFIDENCE && pose2[0].keypoints[i].score > CONFIDENCE){
+      if(pose2[0].keypoints[i].score > CONFIDENCE){
         if(Math.abs(pose1[0].keypoints[i].position.x - pose2[0].keypoints[i].position.x) > TOLERANCE && Math.abs(pose1[0].keypoints[i].position.y - pose2[0].keypoints[i].position.y) > TOLERANCE){
           return false;
         }
@@ -386,6 +380,9 @@ class PoseNet extends Component {
           </button>
           {this.state.isTimer && <p>time: {this.state.timer}</p>}
           <h3>{this.state.label}</h3>
+          <p>situps: {this.state.situps}</p>
+          <p>pushups: {this.state.pushups}</p>
+          <p>squats: {this.state.squats}</p>
         </div>
       </div>
     );
