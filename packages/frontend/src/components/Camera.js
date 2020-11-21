@@ -48,8 +48,9 @@ class PoseNet extends Component {
       this.posenet = await posenet.load({
         architecture: "ResNet50",
         outputStride: 32,
-        inputResolution: { width: 257, height: 200 },
+        inputResolution: { width: 250, height: 250 },
         quantBytes: 2,
+        multiplier: 1
       });
     } catch (error) {
       throw new Error("PoseNet failed to load");
@@ -144,8 +145,9 @@ class PoseNet extends Component {
         case "single-pose":
         default: {
           const pose = await posenetModel.estimateSinglePose(video, {
-            flipHorizontal,
+            flipHorizontal
           });
+
           poses.push(pose);
           break;
         }
