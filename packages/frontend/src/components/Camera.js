@@ -8,9 +8,6 @@ class PoseNet extends Component {
   pushupPos2 = null;
   squatPos1 = null;
   squatPos2 = null;
-  pushups = 0;
-  squats = 0;
-  situps = 0;
   situpPos1 = null;
   situpPos2 = null;
   static defaultProps = {
@@ -37,7 +34,10 @@ class PoseNet extends Component {
     this.state = {
       timer: 0,
       isTimer: false,
-      label: ""
+      label: "",
+      situps:0,
+      squats:0,
+      pushups:0,
     };
   }
 
@@ -142,14 +142,7 @@ class PoseNet extends Component {
     // remove the label
     this.setState({ label: "" });
 
-    console.log({
-      "pup": this.pushupPos1,
-      "pdown": this.pushupPos2,
-      "squp": this.squatPos1,
-      "sqdown": this.squatPos2,
-      "situp": this.situpPos1,
-      "sitdown": this.situpPos2
-    })
+    await this.main();
   }
   
 
@@ -326,7 +319,7 @@ class PoseNet extends Component {
             break;
         }
     }
-    this.pushups++;
+    this.setState({pushups:this.state.pushups+1});
   }
 
   async checkSquat(){
@@ -342,7 +335,7 @@ class PoseNet extends Component {
             break;
         }
     }
-    this.squats++;
+    this.setState({squats:this.state.squats+1});
   }
 
   async checkSitup(){
@@ -358,7 +351,7 @@ class PoseNet extends Component {
             break;
         }
     }
-    this.situps++;
+    this.setState({situps:this.state.situps+1});
   }
 
   isWithinInterval(pose1, pose2){
@@ -386,6 +379,9 @@ class PoseNet extends Component {
           </button>
           {this.state.isTimer && <p>time: {this.state.timer}</p>}
           <h3>{this.state.label}</h3>
+          <p>situps: {this.state.situps}</p>
+          <p>pushups: {this.state.pushups}</p>
+          <p>squats: {this.state.squats}</p>
         </div>
       </div>
     );
