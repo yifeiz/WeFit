@@ -164,11 +164,6 @@ class PoseNet extends Component {
       poses.forEach(({ score, keypoints }) => {
         if (score >= minPoseConfidence) {
           if (showPoints) {
-            if(keypoints){
-              for(let point of keypoints){
-                point.position.x = 900-point.position.x;
-              }
-            }
             drawKeyPoints(
               keypoints,
               minPartConfidence,
