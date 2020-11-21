@@ -11,6 +11,8 @@ class PoseNet extends Component {
   pushups = 0;
   squats = 0;
   situps = 0;
+  situpPos1 = null;
+  situpPos2 = null;
   static defaultProps = {
     videoWidth: 900,
     videoHeight: 700,
@@ -32,7 +34,11 @@ class PoseNet extends Component {
 
   constructor(props) {
     super(props, PoseNet.defaultProps);
-    this.state = { timer: 0, isTimer: false };
+    this.state = {
+      timer: 0,
+      isTimer: false,
+      label: ""
+    };
   }
 
   getCanvas = elem => {
@@ -105,63 +111,45 @@ class PoseNet extends Component {
   }
 
   async startTimer() {
-    this.setState({ timer: 5, isTimer: true });
-
-    for (let i = 4; i >= 0; i--) {
-      await this.timeout(1000);
-      this.setState({ timer: i, isTimer: true });
-      console.log(this.state)
+    let calibrationArray = ["pushupPos1", "pushupPos2", "squatPos1", "squatPos2", "situpPos1", "situpPos2"]
+    let posMapping = {
+      "pushupPos1": "Pushup Upwards Position",
+      "pushupPos2": "Pushup Downwards Position",
+      "squatPos1": "Squat Upwards Position",
+      "squatPos2": "Squat Downwards Position",
+      "situpPos1": "Situp Upwards Position",
+      "situpPos2": "Situp Downwards Position"
     }
 
-    this.setState({ timer: 0, isTimer: false });
-    //call capture function
-    // this.pushupPos1 = this.detectPose();
+    // iterates through all the positions
+    for (let posIdx = 0; posIdx < calibrationArray.length; posIdx++) {
+      this.setState({ timer: 5, isTimer: true, label: `Now go into a ${posMapping[calibrationArray[posIdx]]}` });
 
-    const {
-      algorithm,
-      imageScaleFactor,
-      flipHorizontal,
-      outputStride,
-      minPartConfidence,
-      maxPoseDetections,
-      nmsRadius,
-    } = this.props;
-
-    const posenetModel = this.posenet;
-    const video = this.video;
-
-    const findPoseDetectionFrame = async () => {
-      let poses = [];
-
-      switch (algorithm) {
-        case "multi-pose": {
-          poses = await posenetModel.estimateMultiplePoses(
-            video,
-            imageScaleFactor,
-            flipHorizontal,
-            outputStride,
-            maxPoseDetections,
-            minPartConfidence,
-            nmsRadius
-          );
-          break;
-        }
-        case "single-pose":
-        default: {
-          const pose = await posenetModel.estimateSinglePose(video, {
-            flipHorizontal
-          });
-
-          poses.push(pose);
-          break;
-        }
+      for (let i = 4; i >= 0; i--) {
+        await this.timeout(1000);
+        this.setState({ timer: i, isTimer: true });
+        console.log(this.state)
       }
 
-      return poses;
-    };
+      this.setState({ timer: 0, isTimer: false });
+      //call capture function
+      // this.pushupPos1 = this.detectPose();
 
-    this.pushupPos1 = await this.getPose();
-    console.log(this.pushupPos1)
+      this[calibrationArray[posIdx]] = await this.getPose();
+      console.log(this[calibrationArray[posIdx]]);
+    }
+
+    // remove the label
+    this.setState({ label: "" });
+
+    console.log({
+      "pup": this.pushupPos1,
+      "pdown": this.pushupPos2,
+      "squp": this.squatPos1,
+      "sqdown": this.squatPos2,
+      "situp": this.situpPos1,
+      "sitdown": this.situpPos2
+    })
   }
   
 
@@ -378,9 +366,10 @@ class PoseNet extends Component {
           <video id="videoNoShow" playsInline ref={this.getVideo} />
           <canvas className="webcam" ref={this.getCanvas} /><br></br>
           <button onClick={() => this.startTimer()}>
-            start timer for pushup up
+            Start Calibration System
           </button>
           {this.state.isTimer && <p>time: {this.state.timer}</p>}
+          <h3>{this.state.label}</h3>
         </div>
       </div>
     );
