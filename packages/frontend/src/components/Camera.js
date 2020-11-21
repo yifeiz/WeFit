@@ -4,6 +4,10 @@ import * as posenet from "@tensorflow-models/posenet";
 import "@tensorflow/tfjs-backend-webgl";
 
 class PoseNet extends Component {
+  pushupPos1 = null;
+  pushupPos2 = null;
+  squatPos1 = null;
+  squatPos2 = null;
   static defaultProps = {
     videoWidth: 900,
     videoHeight: 700,
@@ -34,7 +38,7 @@ class PoseNet extends Component {
   getVideo = elem => {
     this.video = elem;
   };
-
+  
   async componentDidMount() {
     try {
       await this.setupCamera();
@@ -92,7 +96,9 @@ class PoseNet extends Component {
       };
     });
   }
-
+  logPos(){
+    console.log('aiyahh');
+  }
   detectPose() {
     const { videoWidth, videoHeight } = this.props;
     const canvas = this.canvas;
@@ -195,10 +201,14 @@ class PoseNet extends Component {
         <div>
           <video id="videoNoShow" playsInline ref={this.getVideo} />
           <canvas className="webcam" ref={this.getCanvas} />
+          <button onClick={this.logPos}>
+            log
+          </button>
         </div>
       </div>
     );
   }
 }
+
 
 export default PoseNet;
