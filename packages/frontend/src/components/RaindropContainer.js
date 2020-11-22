@@ -142,7 +142,7 @@ const RaindropContainer = ({
       </StyledDiv>
       <Button
         variant="outline-primary"
-        style={{ marginTop: "12px" }}
+        style={{ marginTop: "12px", marginLeft: "15px" }}
         onClick={() => startGame()}
       >
         Start Game

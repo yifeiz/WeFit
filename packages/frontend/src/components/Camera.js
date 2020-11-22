@@ -46,7 +46,7 @@ class PoseNet extends Component {
     situps: 0,
     squats: 0,
     pushups: 0,
-    isStock:true,
+    isStock:false,
     timeTimer:120,
     totalStocks:3,
     isStartedGame:false,
@@ -414,7 +414,7 @@ class PoseNet extends Component {
     }
   }
   changeGameMode = event => {
-    this.setState({isStock:event.target.value})
+    this.setState({isStock:!this.state.isStock})
     console.log(this.state.isStock);
   };
   render() {
@@ -438,9 +438,9 @@ class PoseNet extends Component {
           />
           
               <FormControl component="fieldset">
-            <RadioGroup row aria-label="isStock" name="isStock" value={this.state.isStock} onChange={this.changeGameMode}>
-              <FormControlLabel value="false" selected={this.state.isStock==false} control={<Radio />} label="Stock" />
-              <FormControlLabel value="true" selected={this.state.isStock==true} control={<Radio />} label="Zen mode" />
+            <RadioGroup row aria-label="isStock" style={{marginLeft:"15px", marginTop:"12px"}} name="isStock" value={this.state.isStock} onChange={this.changeGameMode}>
+              <FormControlLabel value={true} control={<Radio />} label="Stock" />
+              <FormControlLabel value={false} control={<Radio />} label="Zen mode" />
             </RadioGroup>
           </FormControl>
           </div>
