@@ -46,7 +46,7 @@ class PoseNet extends Component {
     situps: 0,
     squats: 0,
     pushups: 0,
-    isStock:false,
+    isStock:true,
     timeTimer:120,
     totalStocks:3,
     isStartedGame:false,
@@ -414,8 +414,8 @@ class PoseNet extends Component {
     }
   }
   changeGameMode = event => {
-    console.log(event.target.value);
     this.setState({isStock:event.target.value})
+    console.log(this.state.isStock);
   };
   render() {
     return (
@@ -424,6 +424,7 @@ class PoseNet extends Component {
           <video id="videoNoShow" playsInline ref={this.getVideo} />
           <canvas className="webcam" ref={this.getCanvas} />
           <br />
+          <div className="row">
           <RaindropContainer
             width={this.props.videoWidth}
             height={this.props.videoHeight}
@@ -435,12 +436,11 @@ class PoseNet extends Component {
             startTimer={this.startTimer}
             isStock={this.state.isStock}
           />
-          <div>
+          
               <FormControl component="fieldset">
-            <FormLabel component="legend">Mode</FormLabel>
-            <RadioGroup aria-label="isStock" name="isStock" value={this.state.isStock} onChange={this.changeGameMode}>
-              <FormControlLabel value="true" control={<Radio />} label="Stock" />
-              <FormControlLabel value="false" control={<Radio />} label="Zen mode" />
+            <RadioGroup row aria-label="isStock" name="isStock" value={this.state.isStock} onChange={this.changeGameMode}>
+              <FormControlLabel value="false" selected={this.state.isStock==false} control={<Radio />} label="Stock" />
+              <FormControlLabel value="true" selected={this.state.isStock==true} control={<Radio />} label="Zen mode" />
             </RadioGroup>
           </FormControl>
           </div>
