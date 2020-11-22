@@ -10,6 +10,9 @@ import Button from "react-bootstrap/Button";
 import Modal from 'react-bootstrap/Modal';
 import goku from "../assets/images/goku.png";
 import fox from "../assets/images/mishoncomplete.png";
+import red from "../assets/images/red.png";
+import blue from "../assets/images/blue.png";
+import green from "../assets/images/green.png";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -277,7 +280,8 @@ class PoseNet extends Component {
   }
 
   main = async () => {
-    this.setState({ isStartedGame: true });
+    this.setState({ isStartedGame: true ,strikes: 0,pushups:0,situps:0,squats:0});
+    this.calculatePoints();
     while (true) {
       const pose = await this.getPose();
       if (this.isWithinInterval(pose, this.pushupPos1)) {
@@ -288,7 +292,7 @@ class PoseNet extends Component {
         await this.checkSitup();
       }
 
-      if (true) {
+      if (this.state.strikes >=3) {
         this.handleShow();
         return;
       }
@@ -462,19 +466,10 @@ class PoseNet extends Component {
         <div className="left-side">
           <video id="videoNoShow" playsInline ref={this.getVideo} />
 
-          <Modal show={true} onHide={this.handleClose}>
+          <Modal show={this.state.showModal} onHide={this.handleClose}>
             <Modal.Header closeButton>
-              <Modal.Title>Modal heading</Modal.Title>
+              <Modal.Title>Game over, Try again later</Modal.Title>
             </Modal.Header>
-            <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={this.handleClose}>
-                Close
-                </Button>
-              <Button variant="primary" onClick={this.handleClose}>
-                Save Changes
-                </Button>
-            </Modal.Footer>
           </Modal>
 
           <canvas className="webcam" ref={this.getCanvas} />
@@ -519,6 +514,11 @@ class PoseNet extends Component {
               <p className="stat-items">Points: {this.state.totalPoints}</p>
               {this.state.isStock ? <p className="stat-items" style={{ float: "left" }}>Stocks: </p> : null}
               {this.state.isStock ? this.renderStocks() : null}
+              <br></br>
+              <span>Pushup: <img src={blue} alt="Blue" className="blue" /></span>
+              <span>Situp: <img src={red} alt="Red" className="red" /></span>
+              <span>Squat: <img src={green} alt="Green" className="green" /></span>
+
             </div>
             <img src={goku} alt="goku" className="goku" />
           </div>
