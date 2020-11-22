@@ -163,7 +163,7 @@ class PoseNet extends Component {
         label: `Now go into a ${posMapping[calibrationArray[posIdx]]}`,
       });
 
-      for (let i = 0; i >= 0; i--) {
+      for (let i = 4; i >= 0; i--) {
         await this.timeout(1000);
         this.setState({ timer: i, isTimer: true });
       }
