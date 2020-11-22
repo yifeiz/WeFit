@@ -28,6 +28,9 @@ const RaindropContainer = ({
   strikes,
   setStrikes
 }) => {
+
+  
+
   const [raindrops, setRaindrops] = useState([
     { exerciseType: PUSHUP, x: 6, y: 0 },
   ]);
@@ -88,7 +91,9 @@ const RaindropContainer = ({
         if (newPos.y < height - 100) {
           newRaindrops.push(newPos);
         } else {
-          setStrikes();
+          if(isStock){
+            setStrikes();
+          }
         }
       });
       if (Math.floor(Math.random() * Math.floor(100)) === 42) {
@@ -133,7 +138,7 @@ const RaindropContainer = ({
 
   return (
     <>
-      <StyledDiv $width={width} $height={height}>
+    {strikes < 3 && <StyledDiv $width={width} $height={height}>
         {raindrops.map(raindrop => {
           return (
             <Raindrop
@@ -144,7 +149,8 @@ const RaindropContainer = ({
             />
           );
         })}
-      </StyledDiv>
+      </StyledDiv>}
+      
       <Button
         variant="outline-primary"
         style={{ marginTop: "12px", marginLeft: "15px" }}
