@@ -40,7 +40,8 @@ class PoseNet extends Component {
     timeTimer:120,
     totalStocks:3,
     isStartedGame:false,
-    isCalibrated:false
+    isCalibrated:false,
+    isCalibrating:false
   };
 
   getCanvas = elem => {
@@ -110,7 +111,7 @@ class PoseNet extends Component {
   }
 
   async startTimer() {
-    this.setState({isCalibrated:true});
+    this.setState({isCalibrating:true  });
     let calibrationArray = [
       "pushupPos1",
       "pushupPos2",
@@ -145,10 +146,7 @@ class PoseNet extends Component {
       this[calibrationArray[posIdx]] = await this.getPose();
       console.log(this[calibrationArray[posIdx]]);
     }
-    this.setState({ timer: 0, isTimer: false });
-
-    // remove the label
-    this.setState({ label: "" });
+    this.setState({ timer: 0, isTimer: false,label: "", isCalibrated:true  });
   }
 
   async getPose() {
@@ -380,7 +378,7 @@ class PoseNet extends Component {
         <video id="videoNoShow" playsInline ref={this.getVideo} />
         <canvas className="webcam" ref={this.getCanvas} />
         <br></br>
-        {!this.state.isCalibrated && <button onClick={() => this.startTimer()}>
+        {!this.state.isCalibrating && <button onClick={() => this.startTimer()}>
           Start Calibration System
         </button>}
         
