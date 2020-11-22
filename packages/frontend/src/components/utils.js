@@ -2,25 +2,6 @@ import * as posenet from "@tensorflow-models/posenet";
 
 const pointRadius = 3;
 
-export const config = {
-  videoWidth: 900,
-  videoHeight: 700,
-  flipHorizontal: true,
-  algorithm: "single-pose",
-  showVideo: true,
-  showSkeleton: true,
-  showPoints: true,
-  minPoseConfidence: 0.1,
-  minPartConfidence: 0.5,
-  maxPoseDetections: 2,
-  nmsRadius: 20,
-  outputStride: 16,
-  imageScaleFactor: 0.5,
-  skeletonColor: "#ffadea",
-  skeletonLineWidth: 6,
-  loadingText: "Loading...please be patient...",
-};
-
 function toTuple({ x, y }) {
   return [x, y];
 }
