@@ -389,7 +389,7 @@ class PoseNet extends Component {
         {this.state.isStartedGame && <p>situps: {this.state.situps}</p>}
         {this.state.isStartedGame && <p>pushups: {this.state.pushups}</p>}
         {this.state.isStartedGame && <p>squats: {this.state.squats}</p>}
-        {this.state.isStartedGame &&
+        {this.state.isCalibrated &&
         <RaindropContainer
           width={this.props.videoWidth}
           height={this.props.videoHeight}
