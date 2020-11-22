@@ -2,12 +2,13 @@ import { drawKeyPoints, drawSkeleton } from "./utils";
 import React, { Component } from "react";
 import * as posenet from "@tensorflow-models/posenet";
 import "@tensorflow/tfjs-backend-webgl";
+
 import RaindropContainer from "./RaindropContainer";
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormControl from "@material-ui/core/FormControl";
+import FormLabel from "@material-ui/core/FormLabel";
 
 class PoseNet extends Component {
   pushupPos1 = null;
@@ -158,8 +159,8 @@ class PoseNet extends Component {
 
       this[calibrationArray[posIdx]] = await this.getPose();
     }
-    this.setState({ timer: 0, isTimer: false,label: "", isCalibrated:true  });
-  }
+    this.setState({ timer: 0, isTimer: false, label: "", isCalibrated: true });
+  };
 
   async getPose() {
     const {
@@ -285,7 +286,10 @@ class PoseNet extends Component {
     console.log("1");
     while (true) {
       const pose = await this.getPose();
-      if(this.isWithinInterval(pose, this.squatPos1) || this.isWithinInterval(pose,this.situpPos1)){
+      if (
+        this.isWithinInterval(pose, this.squatPos1) ||
+        this.isWithinInterval(pose, this.situpPos1)
+      ) {
         return;
       }
       if (this.isWithinInterval(pose, this.pushupPos2)) {
@@ -294,7 +298,10 @@ class PoseNet extends Component {
     }
     while (true) {
       const pose = await this.getPose();
-      if(this.isWithinInterval(pose, this.squatPos1) || this.isWithinInterval(pose,this.situpPos1)){
+      if (
+        this.isWithinInterval(pose, this.squatPos1) ||
+        this.isWithinInterval(pose, this.situpPos1)
+      ) {
         return;
       }
       if (this.isWithinInterval(pose, this.pushupPos1)) {
@@ -306,10 +313,10 @@ class PoseNet extends Component {
     await this.timeout(500);
     return;
   }
-  async startRealTimer(){
-    while(this.state.timeTimer >0){
+  async startRealTimer() {
+    while (this.state.timeTimer > 0) {
       await this.setTimeout(1000);
-      this.setState({timeTimer:this.state.timeTimer-1});
+      this.setState({ timeTimer: this.state.timeTimer - 1 });
     }
   }
   async checkSquat() {
@@ -317,7 +324,10 @@ class PoseNet extends Component {
 
     while (true) {
       const pose = await this.getPose();
-      if(this.isWithinInterval(pose, this.pushupPos1) || this.isWithinInterval(pose,this.situpPos1)){
+      if (
+        this.isWithinInterval(pose, this.pushupPos1) ||
+        this.isWithinInterval(pose, this.situpPos1)
+      ) {
         return;
       }
       if (this.isWithinInterval(pose, this.squatPos2)) {
@@ -326,7 +336,10 @@ class PoseNet extends Component {
     }
     while (true) {
       const pose = await this.getPose();
-      if(this.isWithinInterval(pose, this.pushupPos1) || this.isWithinInterval(pose,this.situpPos1)){
+      if (
+        this.isWithinInterval(pose, this.pushupPos1) ||
+        this.isWithinInterval(pose, this.situpPos1)
+      ) {
         return;
       }
       if (this.isWithinInterval(pose, this.squatPos1)) {
@@ -344,7 +357,10 @@ class PoseNet extends Component {
 
     while (true) {
       const pose = await this.getPose();
-      if(this.isWithinInterval(pose, this.squatPos1) || this.isWithinInterval(pose,this.pushupPos1)){
+      if (
+        this.isWithinInterval(pose, this.squatPos1) ||
+        this.isWithinInterval(pose, this.pushupPos1)
+      ) {
         return;
       }
       if (this.isWithinInterval(pose, this.situpPos2)) {
@@ -353,7 +369,10 @@ class PoseNet extends Component {
     }
     while (true) {
       const pose = await this.getPose();
-      if(this.isWithinInterval(pose, this.squatPos1) || this.isWithinInterval(pose,this.pushupPos1)){
+      if (
+        this.isWithinInterval(pose, this.squatPos1) ||
+        this.isWithinInterval(pose, this.pushupPos1)
+      ) {
         return;
       }
       if (this.isWithinInterval(pose, this.situpPos1)) {
@@ -390,7 +409,7 @@ class PoseNet extends Component {
       return false;
     }
   }
-  changeGameMode = (event) => {
+  changeGameMode = event => {
     console.log(event);
     // this.setState({isStock:event.target.value})
   };
@@ -419,6 +438,15 @@ class PoseNet extends Component {
           squatCount={this.state.squats}
           startTimer={this.startTimer}
         />
+        {this.state.isTimer && <p>time: {this.state.timer}</p>}
+        <h3>{this.state.label}</h3>
+        {this.state.isStartedGame && (
+          <div>
+            <p>situps: {this.state.situps}</p>
+            <p>pushups: {this.state.pushups}</p>
+            <p>squats: {this.state.squats}</p>
+          </div>
+        )}
       </div>
     );
   }
