@@ -114,7 +114,7 @@ class PoseNet extends Component {
     console.log("aiyahh");
   }
 
-  async startTimer() {
+  startTimer = async()=> {
     this.setState({isCalibrating:true  });
     let calibrationArray = [
       "pushupPos1",
@@ -386,10 +386,6 @@ class PoseNet extends Component {
       <div>
         <video id="videoNoShow" playsInline ref={this.getVideo} />
         <canvas className="webcam" ref={this.getCanvas} />
-        <br></br>
-        {!this.state.isCalibrating && <button onClick={() => this.startTimer()}>
-          Start Calibration System
-        </button>}
         
         {this.state.isTimer && <p>time: {this.state.timer}</p>}
         <h3>{this.state.label}</h3>
@@ -407,7 +403,7 @@ class PoseNet extends Component {
           pushupCount={this.state.pushups}
           situpCount={this.state.situps}
           squatCount={this.state.squats}
-          isCalibrated = {this.state.isCalibrated}
+          startTimer={this.startTimer}
         />
       </div>
     );

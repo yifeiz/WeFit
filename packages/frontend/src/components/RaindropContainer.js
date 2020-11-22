@@ -12,7 +12,7 @@ const StyledDiv = styled.div`
   padding: 6px;
 `;
 
-const RaindropContainer = ({ width, height, loaded, main , pushupCount, situpCount, squatCount, isCalibrated}) => {
+const RaindropContainer = ({ width, height, loaded, main , pushupCount, situpCount, squatCount, startTimer}) => {
   const [raindrops, setRaindrops] = useState([{ id: 1, x: 6, y: 0 }]);
   const [strikes, setStrikes] = useState(0);
 
@@ -41,7 +41,8 @@ const RaindropContainer = ({ width, height, loaded, main , pushupCount, situpCou
     }, 50);
   };
 
-  const startGame = () => {
+  const startGame = async () => {
+    await startTimer();
     updateRaindrops(raindrops, strikes);
     main();
   };
