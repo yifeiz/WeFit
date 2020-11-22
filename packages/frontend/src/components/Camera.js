@@ -46,13 +46,14 @@ class PoseNet extends Component {
     situps: 0,
     squats: 0,
     pushups: 0,
-    isStock:false,
-    timeTimer:120,
-    totalStocks:3,
-    isStartedGame:false,
-    isCalibrated:false,
-    isCalibrating:false,
-    totalPoints:0
+    isStock: false,
+    timeTimer: 120,
+    totalStocks: 3,
+    isStartedGame: false,
+    isCalibrated: false,
+    isCalibrating: false,
+    totalPoints: 0,
+    strikes: 0
   };
 
   getCanvas = elem => {
@@ -119,18 +120,18 @@ class PoseNet extends Component {
   logPos() {
     console.log("aiyahh");
   }
-  calculatePoints(){
+  calculatePoints() {
     let points = 0;
     const PUSHPOINTS = 1000;
     const SITPOINTS = 800;
     const SQUATPOINTS = 900;
-    points += this.state.pushups*PUSHPOINTS;
-    points += this.state.situps*SITPOINTS;
-    points += this.state.squats*SQUATPOINTS;
-    this.setState({totalPoints:points});
+    points += this.state.pushups * PUSHPOINTS;
+    points += this.state.situps * SITPOINTS;
+    points += this.state.squats * SQUATPOINTS;
+    this.setState({ totalPoints: points });
   }
-  startTimer = async()=> {
-    this.setState({isCalibrating:true  });
+  startTimer = async () => {
+    this.setState({ isCalibrating: true });
     let calibrationArray = [
       "pushupPos1",
       "pushupPos2",
@@ -413,10 +414,19 @@ class PoseNet extends Component {
       return false;
     }
   }
+
   changeGameMode = event => {
     console.log(event.target.value);
-    this.setState({isStock:event.target.value})
+    this.setState({ isStock: event.target.value })
   };
+
+  setStrikes = () => {
+    console.log("helloooooooooooooo");
+    this.setState({
+      strikes: this.state.strikes + 1
+    })
+  }
+
   render() {
     return (
       <div className="cams">
@@ -434,22 +444,24 @@ class PoseNet extends Component {
             squatCount={this.state.squats}
             startTimer={this.startTimer}
             isStock={this.state.isStock}
+            strikes={this.state.strikes}
+            setStrikes={this.setStrikes}
           />
           <div>
-              <FormControl component="fieldset">
-            <FormLabel component="legend">Mode</FormLabel>
-            <RadioGroup aria-label="isStock" name="isStock" value={this.state.isStock} onChange={this.changeGameMode}>
-              <FormControlLabel value="true" control={<Radio />} label="Stock" />
-              <FormControlLabel value="false" control={<Radio />} label="Zen mode" />
-            </RadioGroup>
-          </FormControl>
+            <FormControl component="fieldset">
+              <FormLabel component="legend">Mode</FormLabel>
+              <RadioGroup aria-label="isStock" name="isStock" value={this.state.isStock} onChange={this.changeGameMode}>
+                <FormControlLabel value="true" control={<Radio />} label="Stock" />
+                <FormControlLabel value="false" control={<Radio />} label="Zen mode" />
+              </RadioGroup>
+            </FormControl>
           </div>
           {this.state.isTimer ? (
             <p className="time" style={{ color: "white" }}>
               Time: {this.state.timer}
             </p>
           ) : null}
-          
+
           <h3 className="instructions">{this.state.label}</h3>
         </div>
         <div className="right-side">
@@ -460,6 +472,7 @@ class PoseNet extends Component {
               <p className="stat-items">Pushups: {this.state.pushups}</p>
               <p className="stat-items">Squats: {this.state.squats}</p>
               <p className="stat-items">Points: {this.state.totalPoints}</p>
+              {this.state.isStock ? <p className="stat-items">Stocks: {this.state.strikes}</p> : null}
             </div>
             <img src={nezuko} alt="Nezuko" className="nezuko" />
           </div>

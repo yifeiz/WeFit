@@ -24,11 +24,12 @@ const RaindropContainer = ({
   squatCount,
   startTimer,
   isStock,
+  strikes,
+  setStrikes
 }) => {
   const [raindrops, setRaindrops] = useState([
     { exerciseType: PUSHUP, x: 6, y: 0 },
   ]);
-  const [strikes, setStrikes] = useState(0);
   const [isGameStarted, setGameStarted] = useState(false);
 
   console.log(pushupCount, situpCount, squatCount);
@@ -86,7 +87,7 @@ const RaindropContainer = ({
         if (newPos.y < height - 100) {
           newRaindrops.push(newPos);
         } else {
-          setStrikes(strikes + 1);
+          setStrikes();
         }
       });
       if (Math.floor(Math.random() * Math.floor(100)) === 42) {
