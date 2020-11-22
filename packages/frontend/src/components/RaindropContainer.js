@@ -23,7 +23,7 @@ const RaindropContainer = ({
   situpCount,
   squatCount,
   startTimer,
-  isStock
+  isStock,
 }) => {
   const [raindrops, setRaindrops] = useState([
     { exerciseType: PUSHUP, x: 6, y: 0 },
@@ -40,7 +40,10 @@ const RaindropContainer = ({
       raindrop => raindrop.exerciseType === PUSHUP
     );
     if (index > -1) {
-      let newRaindrops = raindrops.splice(index, 1);
+      let newRaindrops = [].concat(
+        raindrops.slice(0, index),
+        raindrops.slice(index + 1, raindrops.length)
+      );
       setRaindrops(newRaindrops);
     }
   }, [pushupCount]);
@@ -51,9 +54,11 @@ const RaindropContainer = ({
       raindrop => raindrop.exerciseType === SITUP
     );
     if (index > -1) {
-      console.log(raindrops);
-      let newRaindrops = raindrops.splice(index, 1);
-      console.log(newRaindrops);
+      let newRaindrops = [].concat(
+        raindrops.slice(0, index),
+        raindrops.slice(index + 1, raindrops.length)
+      );
+      setRaindrops(newRaindrops);
     }
   }, [situpCount]);
 
@@ -63,10 +68,10 @@ const RaindropContainer = ({
       raindrop => raindrop.exerciseType === SQUAT
     );
     if (index > -1) {
-      console.log(index);
-      console.log(raindrops);
-      let newRaindrops = raindrops.splice(index, 1);
-      console.log(newRaindrops);
+      let newRaindrops = [].concat(
+        raindrops.slice(0, index),
+        raindrops.slice(index + 1, raindrops.length)
+      );
       setRaindrops(newRaindrops);
     }
   }, [squatCount]);
