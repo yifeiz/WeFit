@@ -3,6 +3,10 @@ import React, { Component } from "react";
 import * as posenet from "@tensorflow-models/posenet";
 import "@tensorflow/tfjs-backend-webgl";
 import RaindropContainer from "./RaindropContainer";
+import '../assets/css/Camera.css';
+import ButtonGroup from './elements/ButtonGroup';
+import Button from 'react-bootstrap/Button'
+import nezuko from '../assets/images/nezuko.png';
 
 class PoseNet extends Component {
   pushupPos1 = null;
@@ -12,8 +16,8 @@ class PoseNet extends Component {
   situpPos1 = null;
   situpPos2 = null;
   static defaultProps = {
-    videoWidth: 900,
-    videoHeight: 700,
+    videoWidth: 771,
+    videoHeight: 600,
     flipHorizontal: true,
     showVideo: true,
     showSkeleton: true,
@@ -353,18 +357,26 @@ class PoseNet extends Component {
 
   render() {
     return (
-      <div>
-        <video id="videoNoShow" playsInline ref={this.getVideo} />
-        <canvas className="webcam" ref={this.getCanvas} />
-        <br></br>
-        <button onClick={() => this.startTimer()}>
-          Start Calibration System
-        </button>
-        {this.state.isTimer && <p>time: {this.state.timer}</p>}
-        <h3>{this.state.label}</h3>
-        <p>situps: {this.state.situps}</p>
-        <p>pushups: {this.state.pushups}</p>
-        <p>squats: {this.state.squats}</p>
+      <div className="cams">
+        <div className="left-side">
+          <video id="videoNoShow" playsInline ref={this.getVideo} />
+          <canvas className="webcam" ref={this.getCanvas} />
+          <br></br>
+          <Button variant="outline-primary" style={{ marginTop: "12px" }} onClick={() => this.startTimer()}>Start Calibration System</Button>
+          {this.state.isTimer ? <p className="time" style={{ color: "white" }}>Time: {this.state.timer}</p> : null}
+          <h3 className="instructions">{this.state.label}</h3>
+        </div>
+        <div className="right-side">
+          <div className="inner-right-side">
+            <div>
+              <h3 className="stats-title">Stats</h3>
+              <p className="stat-items">Situps: {this.state.situps}</p>
+              <p className="stat-items">Pushups: {this.state.pushups}</p>
+              <p className="stat-items">Squats: {this.state.squats}</p>
+            </div>
+            <img src={nezuko} alt="Nezuko" className="nezuko" />
+          </div>
+        </div>
         <RaindropContainer
           width={this.props.videoWidth}
           height={this.props.videoHeight}
