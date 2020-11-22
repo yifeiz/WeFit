@@ -326,7 +326,11 @@ class PoseNet extends Component {
   async checkSquat() {
     while (true) {
       const pose = await this.getPose()
+<<<<<<< HEAD
       if (this.isWithinInterval(pose, this.squatPos2)) {
+=======
+      if(this.isWithinInterval(pose,this.squatPos2)){
+>>>>>>> 0a6094462636900f5101ddc7b27c0bbaa9beb6f4
         break;
       }
     }
