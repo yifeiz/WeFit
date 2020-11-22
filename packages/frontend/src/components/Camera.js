@@ -2,11 +2,17 @@ import { drawKeyPoints, drawSkeleton } from "./utils";
 import React, { Component } from "react";
 import * as posenet from "@tensorflow-models/posenet";
 import "@tensorflow/tfjs-backend-webgl";
+
 import RaindropContainer from "./RaindropContainer";
 import '../assets/css/Camera.css';
 import ButtonGroup from './elements/ButtonGroup';
 import Button from 'react-bootstrap/Button'
 import nezuko from '../assets/images/nezuko.png';
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormControl from "@material-ui/core/FormControl";
+import FormLabel from "@material-ui/core/FormLabel";
 
 class PoseNet extends Component {
   pushupPos1 = null;
@@ -40,6 +46,12 @@ class PoseNet extends Component {
     situps: 0,
     squats: 0,
     pushups: 0,
+    isStock: false,
+    timeTimer: 120,
+    totalStocks: 3,
+    isStartedGame: false,
+    isCalibrated: false,
+    isCalibrating: false,
   };
 
   getCanvas = elem => {
@@ -72,7 +84,6 @@ class PoseNet extends Component {
     }
 
     this.detectPose();
-    console.log("Blah");
     this.setState({ loaded: true });
   }
 
@@ -108,7 +119,8 @@ class PoseNet extends Component {
     console.log("aiyahh");
   }
 
-  async startTimer() {
+  startTimer = async () => {
+    this.setState({ isCalibrating: true });
     let calibrationArray = [
       "pushupPos1",
       "pushupPos2",
@@ -137,20 +149,12 @@ class PoseNet extends Component {
       for (let i = 4; i >= 0; i--) {
         await this.timeout(1000);
         this.setState({ timer: i, isTimer: true });
-        console.log(this.state);
       }
 
-      this.setState({ timer: 0, isTimer: false });
-
       this[calibrationArray[posIdx]] = await this.getPose();
-      console.log(this[calibrationArray[posIdx]]);
     }
-
-    // remove the label
-    this.setState({ label: "" });
-    await this.timeout(500);
-    await this.main();
-  }
+    this.setState({ timer: 0, isTimer: false, label: "", isCalibrated: true });
+  };
 
   async getPose() {
     const {
@@ -258,56 +262,85 @@ class PoseNet extends Component {
     findPoseDetectionFrame();
   }
 
-  async main() {
+  main = async () => {
+    this.setState({ isStartedGame: true });
     while (true) {
       const pose = await this.getPose();
       if (this.isWithinInterval(pose, this.pushupPos1)) {
         await this.checkPushup();
-        await this.timeout(500);
       } else if (this.isWithinInterval(pose, this.squatPos1)) {
         await this.checkSquat();
-        await this.timeout(500);
       } else if (this.isWithinInterval(pose, this.situpPos1)) {
         await this.checkSitup();
-        await this.timeout(500);
       }
     }
-  }
+  };
 
   async checkPushup() {
     console.log("1");
     while (true) {
       const pose = await this.getPose();
+      if (
+        this.isWithinInterval(pose, this.squatPos1) ||
+        this.isWithinInterval(pose, this.situpPos1)
+      ) {
+        return;
+      }
       if (this.isWithinInterval(pose, this.pushupPos2)) {
         break;
       }
     }
     while (true) {
       const pose = await this.getPose();
+      if (
+        this.isWithinInterval(pose, this.squatPos1) ||
+        this.isWithinInterval(pose, this.situpPos1)
+      ) {
+        return;
+      }
       if (this.isWithinInterval(pose, this.pushupPos1)) {
         break;
       }
     }
     this.setState({ pushups: this.state.pushups + 1 });
+    await this.timeout(500);
     return;
   }
-
+  async startRealTimer() {
+    while (this.state.timeTimer > 0) {
+      await this.setTimeout(1000);
+      this.setState({ timeTimer: this.state.timeTimer - 1 });
+    }
+  }
   async checkSquat() {
     console.log("2");
 
     while (true) {
       const pose = await this.getPose();
+      if (
+        this.isWithinInterval(pose, this.pushupPos1) ||
+        this.isWithinInterval(pose, this.situpPos1)
+      ) {
+        return;
+      }
       if (this.isWithinInterval(pose, this.squatPos2)) {
         break;
       }
     }
     while (true) {
       const pose = await this.getPose();
+      if (
+        this.isWithinInterval(pose, this.pushupPos1) ||
+        this.isWithinInterval(pose, this.situpPos1)
+      ) {
+        return;
+      }
       if (this.isWithinInterval(pose, this.squatPos1)) {
         break;
       }
     }
     this.setState({ squats: this.state.squats + 1 });
+    await this.timeout(500);
     return;
   }
 
@@ -316,17 +349,30 @@ class PoseNet extends Component {
 
     while (true) {
       const pose = await this.getPose();
+      if (
+        this.isWithinInterval(pose, this.squatPos1) ||
+        this.isWithinInterval(pose, this.pushupPos1)
+      ) {
+        return;
+      }
       if (this.isWithinInterval(pose, this.situpPos2)) {
         break;
       }
     }
     while (true) {
       const pose = await this.getPose();
+      if (
+        this.isWithinInterval(pose, this.squatPos1) ||
+        this.isWithinInterval(pose, this.pushupPos1)
+      ) {
+        return;
+      }
       if (this.isWithinInterval(pose, this.situpPos1)) {
         break;
       }
     }
     this.setState({ situps: this.state.situps + 1 });
+    await this.timeout(500);
     return;
   }
 
@@ -354,7 +400,10 @@ class PoseNet extends Component {
       return false;
     }
   }
-
+  changeGameMode = event => {
+    console.log(event);
+    // this.setState({isStock:event.target.value})
+  };
   render() {
     return (
       <div className="cams">
@@ -381,7 +430,21 @@ class PoseNet extends Component {
           width={this.props.videoWidth}
           height={this.props.videoHeight}
           loaded={this.state.loaded}
+          main={this.main}
+          pushupCount={this.state.pushups}
+          situpCount={this.state.situps}
+          squatCount={this.state.squats}
+          startTimer={this.startTimer}
         />
+        {this.state.isTimer && <p>time: {this.state.timer}</p>}
+        <h3>{this.state.label}</h3>
+        {this.state.isStartedGame && (
+          <div>
+            <p>situps: {this.state.situps}</p>
+            <p>pushups: {this.state.pushups}</p>
+            <p>squats: {this.state.squats}</p>
+          </div>
+        )}
       </div>
     );
   }
