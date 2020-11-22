@@ -4,10 +4,10 @@ import * as posenet from "@tensorflow-models/posenet";
 import "@tensorflow/tfjs-backend-webgl";
 
 import RaindropContainer from "./RaindropContainer";
-import '../assets/css/Camera.css';
-import ButtonGroup from './elements/ButtonGroup';
-import Button from 'react-bootstrap/Button'
-import nezuko from '../assets/images/nezuko.png';
+import "../assets/css/Camera.css";
+import ButtonGroup from "./elements/ButtonGroup";
+import Button from "react-bootstrap/Button";
+import nezuko from "../assets/images/nezuko.png";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -410,9 +410,22 @@ class PoseNet extends Component {
         <div className="left-side">
           <video id="videoNoShow" playsInline ref={this.getVideo} />
           <canvas className="webcam" ref={this.getCanvas} />
-          <br></br>
-          <Button variant="outline-primary" style={{ marginTop: "12px" }} onClick={() => this.startTimer()}>Start Calibration System</Button>
-          {this.state.isTimer ? <p className="time" style={{ color: "white" }}>Time: {this.state.timer}</p> : null}
+          <br />
+          <RaindropContainer
+            width={this.props.videoWidth}
+            height={this.props.videoHeight}
+            loaded={this.state.loaded}
+            main={this.main}
+            pushupCount={this.state.pushups}
+            situpCount={this.state.situps}
+            squatCount={this.state.squats}
+            startTimer={this.startTimer}
+          />
+          {this.state.isTimer ? (
+            <p className="time" style={{ color: "white" }}>
+              Time: {this.state.timer}
+            </p>
+          ) : null}
           <h3 className="instructions">{this.state.label}</h3>
         </div>
         <div className="right-side">
@@ -426,25 +439,6 @@ class PoseNet extends Component {
             <img src={nezuko} alt="Nezuko" className="nezuko" />
           </div>
         </div>
-        <RaindropContainer
-          width={this.props.videoWidth}
-          height={this.props.videoHeight}
-          loaded={this.state.loaded}
-          main={this.main}
-          pushupCount={this.state.pushups}
-          situpCount={this.state.situps}
-          squatCount={this.state.squats}
-          startTimer={this.startTimer}
-        />
-        {this.state.isTimer && <p>time: {this.state.timer}</p>}
-        <h3>{this.state.label}</h3>
-        {this.state.isStartedGame && (
-          <div>
-            <p>situps: {this.state.situps}</p>
-            <p>pushups: {this.state.pushups}</p>
-            <p>squats: {this.state.squats}</p>
-          </div>
-        )}
       </div>
     );
   }

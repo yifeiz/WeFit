@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Raindrop from "./Raindrop";
 
-import Button from "@material-ui/core/Button";
+import Button from "react-bootstrap/Button";
 import styled from "styled-components";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 const StyledDiv = styled.div`
   width: ${props => props.$width}px;
   height: ${props => props.$height}px;
-  top: 0;
+  top: 70px;
   position: fixed;
   padding: 6px;
 `;
@@ -34,7 +34,7 @@ const RaindropContainer = ({
       raindrops.forEach(raindrop => {
         let newPos = { ...raindrop };
         newPos.y++;
-        if (newPos.y < 600) {
+        if (newPos.y < height - 100) {
           newRaindrops.push(newPos);
         } else {
           setStrikes(strikes + 1);
@@ -71,7 +71,13 @@ const RaindropContainer = ({
           return <Raindrop left={raindrop.x} top={raindrop.y} />;
         })}
       </StyledDiv>
-      <Button onClick={() => startGame()}>Start Game</Button>
+      <Button
+        variant="outline-primary"
+        style={{ marginTop: "12px" }}
+        onClick={() => startGame()}
+      >
+        Start Game
+      </Button>
     </>
   );
 };
