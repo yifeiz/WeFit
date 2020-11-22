@@ -35,9 +35,9 @@ class PoseNet extends Component {
       timer: 0,
       isTimer: false,
       label: "",
-      situps:0,
-      squats:0,
-      pushups:0,
+      situps: 0,
+      squats: 0,
+      pushups: 0,
     };
   }
 
@@ -144,9 +144,9 @@ class PoseNet extends Component {
 
     await this.main();
   }
-  
 
-  async getPose(){
+
+  async getPose() {
     const {
       algorithm,
       imageScaleFactor,
@@ -291,76 +291,76 @@ class PoseNet extends Component {
   }
 
 
-  async main(){
-    while(true){
+  async main() {
+    while (true) {
       const pose = await this.getPose()
-      if(this.isWithinInterval(pose,this.pushupPos1)){
-          await this.checkPushup();
+      if (this.isWithinInterval(pose, this.pushupPos1)) {
+        await this.checkPushup();
       }
-      else if(this.isWithinInterval(pose,this.squatPos1)){
-          await this.checkSquat();
+      else if (this.isWithinInterval(pose, this.squatPos1)) {
+        await this.checkSquat();
       }
-      else if(this.isWithinInterval(pose,this.situpPos1)){
-          await this.checkSitup();
+      else if (this.isWithinInterval(pose, this.situpPos1)) {
+        await this.checkSitup();
       }
     }
   }
 
-  async checkPushup(){
-    while(true){
+  async checkPushup() {
+    while (true) {
       const pose = await this.getPose()
-      if(this.isWithinInterval(pose,this.pushupPos2)){
+      if (this.isWithinInterval(pose, this.pushupPos2)) {
         break;
       }
     }
-    while(true){
+    while (true) {
       const pose = await this.getPose()
-        if(this.isWithinInterval(pose,this.pushupPos1)){
-            break;
-        }
+      if (this.isWithinInterval(pose, this.pushupPos1)) {
+        break;
+      }
     }
-    this.setState({pushups:this.state.pushups+1});
+    this.setState({ pushups: this.state.pushups + 1 });
     return;
   }
 
-  async checkSquat(){
-    while(true){
+  async checkSquat() {
+    while (true) {
       const pose = await this.getPose()
-      if(this.isWithinInterval(pose,this.squatPos1)){
+      if (this.isWithinInterval(pose, this.squatPos2)) {
         break;
       }
     }
-    while(true){
+    while (true) {
       const pose = await this.getPose()
-        if(this.isWithinInterval(pose,this.squatPos2)){
-            break;
-        }
-    }
-    this.setState({squats:this.state.squats+1});
-  }
-
-  async checkSitup(){
-    while(true){
-      const pose = await this.getPose()
-      if(this.isWithinInterval(pose,this.situpPos1)){
+      if (this.isWithinInterval(pose, this.squatPos1)) {
         break;
       }
     }
-    while(true){
-      const pose = await this.getPose()
-        if(this.isWithinInterval(pose,this.situpPos2)){
-            break;
-        }
-    }
-    this.setState({situps:this.state.situps+1});
+    this.setState({ squats: this.state.squats + 1 });
   }
 
-  isWithinInterval(pose1, pose2){
+  async checkSitup() {
+    while (true) {
+      const pose = await this.getPose()
+      if (this.isWithinInterval(pose, this.situpPos2)) {
+        break;
+      }
+    }
+    while (true) {
+      const pose = await this.getPose()
+      if (this.isWithinInterval(pose, this.situpPos1)) {
+        break;
+      }
+    }
+    this.setState({ situps: this.state.situps + 1 });
+  }
+
+  isWithinInterval(pose1, pose2) {
     const TOLERANCE = 30;
     const CONFIDENCE = 0.8;
-    for(let i = 0; i < pose1[0].keypoints.length;i++){
-      if(pose2[0].keypoints[i].score > CONFIDENCE){
-        if(Math.abs(pose1[0].keypoints[i].position.x - pose2[0].keypoints[i].position.x) > TOLERANCE && Math.abs(pose1[0].keypoints[i].position.y - pose2[0].keypoints[i].position.y) > TOLERANCE){
+    for (let i = 0; i < pose1[0].keypoints.length; i++) {
+      if (pose2[0].keypoints[i].score > CONFIDENCE) {
+        if (Math.abs(pose1[0].keypoints[i].position.x - pose2[0].keypoints[i].position.x) > TOLERANCE && Math.abs(pose1[0].keypoints[i].position.y - pose2[0].keypoints[i].position.y) > TOLERANCE) {
           return false;
         }
       }
