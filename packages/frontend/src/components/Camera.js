@@ -416,8 +416,8 @@ class PoseNet extends Component {
   }
 
   changeGameMode = event => {
-    console.log(event.target.value);
-    this.setState({ isStock: event.target.value })
+    this.setState({ isStock: !this.state.isStock })
+    console.log(this.state.isStock);
   };
 
   setStrikes = () => {
@@ -434,25 +434,25 @@ class PoseNet extends Component {
           <video id="videoNoShow" playsInline ref={this.getVideo} />
           <canvas className="webcam" ref={this.getCanvas} />
           <br />
-          <RaindropContainer
-            width={this.props.videoWidth}
-            height={this.props.videoHeight}
-            loaded={this.state.loaded}
-            main={this.main}
-            pushupCount={this.state.pushups}
-            situpCount={this.state.situps}
-            squatCount={this.state.squats}
-            startTimer={this.startTimer}
-            isStock={this.state.isStock}
-            strikes={this.state.strikes}
-            setStrikes={this.setStrikes}
-          />
-          <div>
+          <div className="row">
+            <RaindropContainer
+              width={this.props.videoWidth}
+              height={this.props.videoHeight}
+              loaded={this.state.loaded}
+              main={this.main}
+              pushupCount={this.state.pushups}
+              situpCount={this.state.situps}
+              squatCount={this.state.squats}
+              startTimer={this.startTimer}
+              isStock={this.state.isStock}
+              strikes={this.state.strikes}
+              setStrikes={this.setStrikes}
+            />
+
             <FormControl component="fieldset">
-              <FormLabel component="legend">Mode</FormLabel>
-              <RadioGroup aria-label="isStock" name="isStock" value={this.state.isStock} onChange={this.changeGameMode}>
-                <FormControlLabel value="true" control={<Radio />} label="Stock" />
-                <FormControlLabel value="false" control={<Radio />} label="Zen mode" />
+              <RadioGroup row aria-label="isStock" style={{ marginLeft: "15px", marginTop: "12px" }} name="isStock" value={this.state.isStock} onChange={this.changeGameMode}>
+                <FormControlLabel value={true} control={<Radio />} label="Stock" />
+                <FormControlLabel value={false} control={<Radio />} label="Zen mode" />
               </RadioGroup>
             </FormControl>
           </div>
