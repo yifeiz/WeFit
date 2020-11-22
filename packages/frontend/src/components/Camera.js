@@ -7,7 +7,7 @@ import RaindropContainer from "./RaindropContainer";
 import "../assets/css/Camera.css";
 import ButtonGroup from "./elements/ButtonGroup";
 import Button from "react-bootstrap/Button";
-import Modal from 'react-bootstrap/Modal';
+import Modal from "react-bootstrap/Modal";
 import goku from "../assets/images/goku.png";
 import fox from "../assets/images/mishoncomplete.png";
 import Radio from "@material-ui/core/Radio";
@@ -56,7 +56,7 @@ class PoseNet extends Component {
     isCalibrating: false,
     totalPoints: 0,
     strikes: 0,
-    showModal: false
+    showModal: false,
   };
 
   getCanvas = elem => {
@@ -424,15 +424,15 @@ class PoseNet extends Component {
   }
 
   changeGameMode = event => {
-    this.setState({ isStock: !this.state.isStock })
+    this.setState({ isStock: !this.state.isStock });
     console.log(this.state.isStock);
   };
 
   setStrikes = () => {
     this.setState({
-      strikes: this.state.strikes + 1
-    })
-  }
+      strikes: this.state.strikes + 1,
+    });
+  };
 
   renderStocks = () => {
     let stockArr = [];
@@ -442,19 +442,19 @@ class PoseNet extends Component {
     }
 
     return stockArr;
-  }
+  };
 
   handleClose = () => {
     this.setState({
-      showModal: false
-    })
-  }
+      showModal: false,
+    });
+  };
 
   handleShow = () => {
     this.setState({
-      showModal: true
-    })
-  }
+      showModal: true,
+    });
+  };
 
   render() {
     return (
@@ -466,14 +466,16 @@ class PoseNet extends Component {
             <Modal.Header closeButton>
               <Modal.Title>Modal heading</Modal.Title>
             </Modal.Header>
-            <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+            <Modal.Body>
+              Woohoo, you're reading this text in a modal!
+            </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={this.handleClose}>
                 Close
-                </Button>
+              </Button>
               <Button variant="primary" onClick={this.handleClose}>
                 Save Changes
-                </Button>
+              </Button>
             </Modal.Footer>
           </Modal>
 
@@ -495,9 +497,24 @@ class PoseNet extends Component {
             />
 
             <FormControl component="fieldset">
-              <RadioGroup row aria-label="isStock" style={{ marginLeft: "15px", marginTop: "12px" }} name="isStock" value={this.state.isStock} onChange={this.changeGameMode}>
-                <FormControlLabel value={true} control={<Radio />} label="Stock" />
-                <FormControlLabel value={false} control={<Radio />} label="Zen mode" />
+              <RadioGroup
+                row
+                aria-label="isStock"
+                style={{ marginLeft: "15px", marginTop: "12px" }}
+                name="isStock"
+                value={this.state.isStock}
+                onChange={this.changeGameMode}
+              >
+                <FormControlLabel
+                  value={true}
+                  control={<Radio />}
+                  label="Stock"
+                />
+                <FormControlLabel
+                  value={false}
+                  control={<Radio />}
+                  label="Zen mode"
+                />
               </RadioGroup>
             </FormControl>
           </div>
@@ -517,7 +534,11 @@ class PoseNet extends Component {
               <p className="stat-items">Pushups: {this.state.pushups}</p>
               <p className="stat-items">Squats: {this.state.squats}</p>
               <p className="stat-items">Points: {this.state.totalPoints}</p>
-              {this.state.isStock ? <p className="stat-items" style={{ float: "left" }}>Stocks: </p> : null}
+              {this.state.isStock ? (
+                <p className="stat-items" style={{ float: "left" }}>
+                  Stocks:{" "}
+                </p>
+              ) : null}
               {this.state.isStock ? this.renderStocks() : null}
             </div>
             <img src={goku} alt="goku" className="goku" />

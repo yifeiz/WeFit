@@ -12,3 +12,7 @@
   -webkit-transform: scaleX(-1);
   display: none !important;
 }
+
+.modal-backdrop {
+  opacity: 0 !important;
+}
