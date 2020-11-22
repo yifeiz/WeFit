@@ -7,7 +7,9 @@ import RaindropContainer from "./RaindropContainer";
 import "../assets/css/Camera.css";
 import ButtonGroup from "./elements/ButtonGroup";
 import Button from "react-bootstrap/Button";
-import nezuko from "../assets/images/nezuko.png";
+import Modal from 'react-bootstrap/Modal';
+import goku from "../assets/images/goku.png";
+import fox from "../assets/images/mishoncomplete.png";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -53,7 +55,8 @@ class PoseNet extends Component {
     isCalibrated: false,
     isCalibrating: false,
     totalPoints: 0,
-    strikes: 0
+    strikes: 0,
+    showModal: false
   };
 
   getCanvas = elem => {
@@ -157,7 +160,7 @@ class PoseNet extends Component {
         label: `Now go into a ${posMapping[calibrationArray[posIdx]]}`,
       });
 
-      for (let i = 4; i >= 0; i--) {
+      for (let i = 0; i >= 0; i--) {
         await this.timeout(1000);
         this.setState({ timer: i, isTimer: true });
       }
@@ -283,6 +286,11 @@ class PoseNet extends Component {
         await this.checkSquat();
       } else if (this.isWithinInterval(pose, this.situpPos1)) {
         await this.checkSitup();
+      }
+
+      if (true) {
+        this.handleShow();
+        return;
       }
     }
   };
@@ -421,9 +429,30 @@ class PoseNet extends Component {
   };
 
   setStrikes = () => {
-    console.log("helloooooooooooooo");
     this.setState({
       strikes: this.state.strikes + 1
+    })
+  }
+
+  renderStocks = () => {
+    let stockArr = [];
+
+    for (let i = 0; i < 3 - this.state.strikes; i++) {
+      stockArr.push(<img src={fox} alt="Fox" className="fox" />);
+    }
+
+    return stockArr;
+  }
+
+  handleClose = () => {
+    this.setState({
+      showModal: false
+    })
+  }
+
+  handleShow = () => {
+    this.setState({
+      showModal: true
     })
   }
 
@@ -432,6 +461,22 @@ class PoseNet extends Component {
       <div className="cams">
         <div className="left-side">
           <video id="videoNoShow" playsInline ref={this.getVideo} />
+
+          <Modal show={true} onHide={this.handleClose}>
+            <Modal.Header closeButton>
+              <Modal.Title>Modal heading</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={this.handleClose}>
+                Close
+                </Button>
+              <Button variant="primary" onClick={this.handleClose}>
+                Save Changes
+                </Button>
+            </Modal.Footer>
+          </Modal>
+
           <canvas className="webcam" ref={this.getCanvas} />
           <br />
           <div className="row">
@@ -472,9 +517,10 @@ class PoseNet extends Component {
               <p className="stat-items">Pushups: {this.state.pushups}</p>
               <p className="stat-items">Squats: {this.state.squats}</p>
               <p className="stat-items">Points: {this.state.totalPoints}</p>
-              {this.state.isStock ? <p className="stat-items">Stocks: {this.state.strikes}</p> : null}
+              {this.state.isStock ? <p className="stat-items" style={{ float: "left" }}>Stocks: </p> : null}
+              {this.state.isStock ? this.renderStocks() : null}
             </div>
-            <img src={nezuko} alt="Nezuko" className="nezuko" />
+            <img src={goku} alt="goku" className="goku" />
           </div>
         </div>
       </div>

@@ -49,8 +49,15 @@
     margin-bottom: 0px;
 }
 
-.nezuko {
+.goku {
     height: 500px;
-    margin-left: 60px;
+    margin-left: 90px;
     margin-top: 30px;
+}
+
+.fox {
+    height: 25px;
+    float: left;
+    margin-left: 3px;
+    margin-top: 6px;
 }

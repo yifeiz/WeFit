@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Raindrop from "./Raindrop";
 
 import Button from "react-bootstrap/Button";
+
 import styled from "styled-components";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { PUSHUP, SITUP, SQUAT } from "./types";
@@ -125,6 +126,9 @@ const RaindropContainer = ({
   };
   if (!loaded) {
     return <CircularProgress />;
+  }
+  else if (strikes >= 3) {
+    console.log("Stopped!");
   }
 
   return (
