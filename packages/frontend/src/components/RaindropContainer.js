@@ -23,7 +23,7 @@ const RaindropContainer = ({
   situpCount,
   squatCount,
   startTimer,
-  isStock
+  isStock,
 }) => {
   const [raindrops, setRaindrops] = useState([
     { exerciseType: PUSHUP, x: 6, y: 0 },
@@ -31,32 +31,47 @@ const RaindropContainer = ({
   const [strikes, setStrikes] = useState(0);
   const [isGameStarted, setGameStarted] = useState(false);
 
+  console.log(pushupCount, situpCount, squatCount);
+
   useEffect(() => {
+    console.log("Pushup detected");
+    console.log(raindrops);
     const index = raindrops.findIndex(
       raindrop => raindrop.exerciseType === PUSHUP
     );
     if (index > -1) {
-      let newRaindrops = raindrops.slice(index, 1);
+      let newRaindrops = [].concat(
+        raindrops.slice(0, index),
+        raindrops.slice(index + 1, raindrops.length)
+      );
       setRaindrops(newRaindrops);
     }
   }, [pushupCount]);
 
   useEffect(() => {
+    console.log("Situp");
     const index = raindrops.findIndex(
       raindrop => raindrop.exerciseType === SITUP
     );
     if (index > -1) {
-      let newRaindrops = raindrops.slice(index, 1);
+      let newRaindrops = [].concat(
+        raindrops.slice(0, index),
+        raindrops.slice(index + 1, raindrops.length)
+      );
       setRaindrops(newRaindrops);
     }
   }, [situpCount]);
 
   useEffect(() => {
+    console.log("Squat");
     const index = raindrops.findIndex(
       raindrop => raindrop.exerciseType === SQUAT
     );
     if (index > -1) {
-      let newRaindrops = raindrops.slice(index, 1);
+      let newRaindrops = [].concat(
+        raindrops.slice(0, index),
+        raindrops.slice(index + 1, raindrops.length)
+      );
       setRaindrops(newRaindrops);
     }
   }, [squatCount]);
@@ -119,6 +134,7 @@ const RaindropContainer = ({
             <Raindrop
               left={raindrop.x}
               top={raindrop.y}
+              key={`${raindrop.exerciseType}-${raindrop.x}`}
               exerciseType={raindrop.exerciseType}
             />
           );
