@@ -36,6 +36,11 @@ class PoseNet extends Component {
     situps: 0,
     squats: 0,
     pushups: 0,
+    isStock:false,
+    timeTimer:120,
+    totalStocks:3,
+    isStartedGame:false,
+    isCalibrated:false
   };
 
   getCanvas = elem => {
@@ -105,6 +110,7 @@ class PoseNet extends Component {
   }
 
   async startTimer() {
+    this.setState({isCalibrated:true});
     let calibrationArray = [
       "pushupPos1",
       "pushupPos2",
@@ -136,16 +142,13 @@ class PoseNet extends Component {
         console.log(this.state);
       }
 
-      this.setState({ timer: 0, isTimer: false });
-
       this[calibrationArray[posIdx]] = await this.getPose();
       console.log(this[calibrationArray[posIdx]]);
     }
+    this.setState({ timer: 0, isTimer: false });
 
     // remove the label
     this.setState({ label: "" });
-    await this.timeout(500);
-    await this.main();
   }
 
   async getPose() {
@@ -255,6 +258,7 @@ class PoseNet extends Component {
   }
 
   main = async () => {
+    this.setState({isStartedGame:true});
     while (true) {
       const pose = await this.getPose();
       console.log(pose);
@@ -376,20 +380,22 @@ class PoseNet extends Component {
         <video id="videoNoShow" playsInline ref={this.getVideo} />
         <canvas className="webcam" ref={this.getCanvas} />
         <br></br>
-        <button onClick={() => this.startTimer()}>
+        {!this.state.isCalibrated && <button onClick={() => this.startTimer()}>
           Start Calibration System
-        </button>
+        </button>}
+        
         {this.state.isTimer && <p>time: {this.state.timer}</p>}
         <h3>{this.state.label}</h3>
-        <p>situps: {this.state.situps}</p>
-        <p>pushups: {this.state.pushups}</p>
-        <p>squats: {this.state.squats}</p>
+        {this.state.isStartedGame && <p>situps: {this.state.situps}</p>}
+        {this.state.isStartedGame && <p>pushups: {this.state.pushups}</p>}
+        {this.state.isStartedGame && <p>squats: {this.state.squats}</p>}
+        {this.state.isStartedGame &&
         <RaindropContainer
           width={this.props.videoWidth}
           height={this.props.videoHeight}
           loaded={this.state.loaded}
           main={this.main}
-        />
+        />}
       </div>
     );
   }
