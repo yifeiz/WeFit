@@ -132,8 +132,6 @@ class PoseNet extends Component {
       }
 
       this.setState({ timer: 0, isTimer: false });
-      //call capture function
-      // this.pushupPos1 = this.detectPose();
 
       this[calibrationArray[posIdx]] = await this.getPose();
       console.log(this[calibrationArray[posIdx]]);
@@ -141,7 +139,7 @@ class PoseNet extends Component {
 
     // remove the label
     this.setState({ label: "" });
-
+    await this.timeout(500);
     await this.main();
   }
   
@@ -296,17 +294,21 @@ class PoseNet extends Component {
       const pose = await this.getPose()
       if(this.isWithinInterval(pose,this.pushupPos1)){
           await this.checkPushup();
+          await this.timeout(500);
       }
       else if(this.isWithinInterval(pose,this.squatPos1)){
           await this.checkSquat();
+          await this.timeout(500);
       }
       else if(this.isWithinInterval(pose,this.situpPos1)){
           await this.checkSitup();
+          await this.timeout(500);
       }
     }
   }
 
   async checkPushup(){
+    console.log('1');
     while(true){
       const pose = await this.getPose()
       if(this.isWithinInterval(pose,this.pushupPos2)){
@@ -324,6 +326,8 @@ class PoseNet extends Component {
   }
 
   async checkSquat(){
+    console.log('2');
+
     while(true){
       const pose = await this.getPose()
       if(this.isWithinInterval(pose,this.squatPos2)){
@@ -337,9 +341,12 @@ class PoseNet extends Component {
         }
     }
     this.setState({squats:this.state.squats+1});
+    return;
   }
 
   async checkSitup(){
+    console.log('3');
+
     while(true){
       const pose = await this.getPose()
       if(this.isWithinInterval(pose,this.situpPos2)){
@@ -353,19 +360,26 @@ class PoseNet extends Component {
         }
     }
     this.setState({situps:this.state.situps+1});
+    return;
   }
 
   isWithinInterval(pose1, pose2){
     const TOLERANCE = 30;
     const CONFIDENCE = 0.8;
+    let count = 0;
     for(let i = 0; i < pose1[0].keypoints.length;i++){
       if(pose2[0].keypoints[i].score > CONFIDENCE){
-        if(Math.abs(pose1[0].keypoints[i].position.x - pose2[0].keypoints[i].position.x) > TOLERANCE && Math.abs(pose1[0].keypoints[i].position.y - pose2[0].keypoints[i].position.y) > TOLERANCE){
-          return false;
+        if(Math.abs(pose1[0].keypoints[i].position.x - pose2[0].keypoints[i].position.x) > TOLERANCE || Math.abs(pose1[0].keypoints[i].position.y - pose2[0].keypoints[i].position.y) > TOLERANCE){
+          count++
         }
       }
     }
-    return true;
+    if(count < 4){
+      return true;
+    }
+    else{
+      return false;
+    }
   }
 
 
