@@ -23,6 +23,7 @@ const RaindropContainer = ({
   situpCount,
   squatCount,
   startTimer,
+  isStock
 }) => {
   const [raindrops, setRaindrops] = useState([
     { exerciseType: PUSHUP, x: 6, y: 0 },

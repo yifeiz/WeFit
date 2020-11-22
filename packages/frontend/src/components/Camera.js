@@ -433,6 +433,7 @@ class PoseNet extends Component {
             situpCount={this.state.situps}
             squatCount={this.state.squats}
             startTimer={this.startTimer}
+            isStock={this.state.isStock}
           />
           <div>
               <FormControl component="fieldset">
