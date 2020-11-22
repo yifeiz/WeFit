@@ -46,7 +46,8 @@ class PoseNet extends Component {
     totalStocks:3,
     isStartedGame:false,
     isCalibrated:false,
-    isCalibrating:false
+    isCalibrating:false,
+    totalPoints:0
   };
 
   getCanvas = elem => {
@@ -113,7 +114,16 @@ class PoseNet extends Component {
   logPos() {
     console.log("aiyahh");
   }
-
+  calculatePoints(){
+    let points = 0;
+    const PUSHPOINTS = 1000;
+    const SITPOINTS = 800;
+    const SQUATPOINTS = 900;
+    points += this.state.pushups*PUSHPOINTS;
+    points += this.state.situps*SITPOINTS;
+    points += this.state.squats*SQUATPOINTS;
+    this.setState({totalPoints:points});
+  }
   startTimer = async()=> {
     this.setState({isCalibrating:true  });
     let calibrationArray = [
@@ -292,6 +302,7 @@ class PoseNet extends Component {
       }
     }
     this.setState({ pushups: this.state.pushups + 1 });
+    this.calculatePoints();
     await this.timeout(500);
     return;
   }
@@ -323,6 +334,7 @@ class PoseNet extends Component {
       }
     }
     this.setState({ squats: this.state.squats + 1 });
+    this.calculatePoints();
     await this.timeout(500);
     return;
   }
@@ -349,6 +361,7 @@ class PoseNet extends Component {
       }
     }
     this.setState({ situps: this.state.situps + 1 });
+    this.calculatePoints();
     await this.timeout(500);
     return;
   }
@@ -393,6 +406,7 @@ class PoseNet extends Component {
         <p>situps: {this.state.situps}</p>
         <p>pushups: {this.state.pushups}</p>
         <p>squats: {this.state.squats}</p>
+        <p>Points: {this.state.totalPoints}</p>
         </div>}
         
           <RaindropContainer
