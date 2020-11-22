@@ -4,10 +4,10 @@ import * as posenet from "@tensorflow-models/posenet";
 import "@tensorflow/tfjs-backend-webgl";
 
 import RaindropContainer from "./RaindropContainer";
-import '../assets/css/Camera.css';
-import ButtonGroup from './elements/ButtonGroup';
-import Button from 'react-bootstrap/Button'
-import nezuko from '../assets/images/nezuko.png';
+import "../assets/css/Camera.css";
+import ButtonGroup from "./elements/ButtonGroup";
+import Button from "react-bootstrap/Button";
+import nezuko from "../assets/images/nezuko.png";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -423,28 +423,33 @@ class PoseNet extends Component {
         <div className="left-side">
           <video id="videoNoShow" playsInline ref={this.getVideo} />
           <canvas className="webcam" ref={this.getCanvas} />
-          <br></br>
+          <br />
           <RaindropContainer
-          width={this.props.videoWidth}
-          height={this.props.videoHeight}
-          loaded={this.state.loaded}
-          main={this.main}
-          pushupCount={this.state.pushups}
-          situpCount={this.state.situps}
-          squatCount={this.state.squats}
-          startTimer={this.startTimer}
-        />
-        <div>
-        <FormControl component="fieldset">
-      <FormLabel component="legend">Mode</FormLabel>
-      <RadioGroup aria-label="isStock" name="isStock" value={this.state.isStock} onChange={this.changeGameMode}>
-        <FormControlLabel value="true" control={<Radio />} label="Stock" />
-        <FormControlLabel value="false" control={<Radio />} label="Zen mode" />
-      </RadioGroup>
-    </FormControl>
-    </div>
-        {this.state.isTimer && <p>time: {this.state.timer}</p>}
-        <h3>{this.state.label}</h3>
+            width={this.props.videoWidth}
+            height={this.props.videoHeight}
+            loaded={this.state.loaded}
+            main={this.main}
+            pushupCount={this.state.pushups}
+            situpCount={this.state.situps}
+            squatCount={this.state.squats}
+            startTimer={this.startTimer}
+          />
+          <div>
+              <FormControl component="fieldset">
+            <FormLabel component="legend">Mode</FormLabel>
+            <RadioGroup aria-label="isStock" name="isStock" value={this.state.isStock} onChange={this.changeGameMode}>
+              <FormControlLabel value="true" control={<Radio />} label="Stock" />
+              <FormControlLabel value="false" control={<Radio />} label="Zen mode" />
+            </RadioGroup>
+          </FormControl>
+          </div>
+          {this.state.isTimer ? (
+            <p className="time" style={{ color: "white" }}>
+              Time: {this.state.timer}
+            </p>
+          ) : null}
+          
+          <h3 className="instructions">{this.state.label}</h3>
         </div>
         <div className="right-side">
           <div className="inner-right-side">
@@ -458,8 +463,6 @@ class PoseNet extends Component {
             <img src={nezuko} alt="Nezuko" className="nezuko" />
           </div>
         </div>
-        
-        
       </div>
     );
   }

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Raindrop from "./Raindrop";
 
-import Button from "@material-ui/core/Button";
+import Button from "react-bootstrap/Button";
 import styled from "styled-components";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import { PUSHUP, SITUP, SQUAT } from "./types";
 
 const StyledDiv = styled.div`
   width: ${props => props.$width}px;
@@ -23,9 +24,41 @@ const RaindropContainer = ({
   squatCount,
   startTimer,
 }) => {
-  const [raindrops, setRaindrops] = useState([{ id: 1, x: 6, y: 0 }]);
+  const [raindrops, setRaindrops] = useState([
+    { exerciseType: PUSHUP, x: 6, y: 0 },
+  ]);
   const [strikes, setStrikes] = useState(0);
   const [isGameStarted, setGameStarted] = useState(false);
+
+  useEffect(() => {
+    const index = raindrops.findIndex(
+      raindrop => raindrop.exerciseType === PUSHUP
+    );
+    if (index > -1) {
+      let newRaindrops = raindrops.slice(index, 1);
+      setRaindrops(newRaindrops);
+    }
+  }, [pushupCount]);
+
+  useEffect(() => {
+    const index = raindrops.findIndex(
+      raindrop => raindrop.exerciseType === SITUP
+    );
+    if (index > -1) {
+      let newRaindrops = raindrops.slice(index, 1);
+      setRaindrops(newRaindrops);
+    }
+  }, [situpCount]);
+
+  useEffect(() => {
+    const index = raindrops.findIndex(
+      raindrop => raindrop.exerciseType === SQUAT
+    );
+    if (index > -1) {
+      let newRaindrops = raindrops.slice(index, 1);
+      setRaindrops(newRaindrops);
+    }
+  }, [squatCount]);
 
   useEffect(() => {
     if (!isGameStarted) return;
@@ -34,15 +67,28 @@ const RaindropContainer = ({
       raindrops.forEach(raindrop => {
         let newPos = { ...raindrop };
         newPos.y++;
-        if (newPos.y < 600) {
+        if (newPos.y < height - 100) {
           newRaindrops.push(newPos);
         } else {
           setStrikes(strikes + 1);
         }
       });
       if (Math.floor(Math.random() * Math.floor(100)) === 42) {
+        let exerciseType;
+        switch (Math.floor(Math.random() * Math.floor(3))) {
+          case 1:
+            exerciseType = PUSHUP;
+            break;
+          case 2:
+            exerciseType = SITUP;
+            break;
+          case 3:
+          default:
+            exerciseType = SQUAT;
+            break;
+        }
         newRaindrops.push({
-          id: 2,
+          exerciseType,
           x: Math.floor(Math.random() * Math.floor(800)) + 6,
           y: 0,
         });
@@ -68,10 +114,22 @@ const RaindropContainer = ({
     <>
       <StyledDiv $width={width} $height={height}>
         {raindrops.map(raindrop => {
-          return <Raindrop left={raindrop.x} top={raindrop.y} />;
+          return (
+            <Raindrop
+              left={raindrop.x}
+              top={raindrop.y}
+              exerciseType={raindrop.exerciseType}
+            />
+          );
         })}
       </StyledDiv>
-      <Button onClick={() => startGame()}>Start Game</Button>
+      <Button
+        variant="outline-primary"
+        style={{ marginTop: "12px" }}
+        onClick={() => startGame()}
+      >
+        Start Game
+      </Button>
     </>
   );
 };
