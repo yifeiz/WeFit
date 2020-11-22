@@ -73,11 +73,9 @@ const Hero = ({
                 </p>
               <div className="reveal-from-bottom" data-reveal-delay="600">
                 <Link to="/game">
-                  <ButtonGroup>
-                    <Button className="link-start" color="primary" wideMobile>
-                      Play Game
-                    </Button>
-                  </ButtonGroup>
+                  <Button className="link-start" color="primary" wideMobile>
+                    Play Game
+                </Button>
                 </Link>
               </div>
             </div>
