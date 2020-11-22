@@ -5,26 +5,31 @@ import Button from "@material-ui/core/Button";
 import styled from "styled-components";
 
 const StyledDiv = styled.div`
-  width: width,
-  height: height,
-  top: 0,
-  position: "fixed",
-  padding: "6px",
+  width: ${props => props.$width}px;
+  height: ${props => props.$height}px;
+  top: 0;
+  position: fixed;
+  padding: 6px;
 `;
 
-const RaindropContainer = ({ width, height, loaded }) => {
+const RaindropContainer = ({ width, height, main }) => {
   const [raindrops, setRaindrops] = useState([
     { id: 1, x: 6, y: 0 },
     { id: 2, x: 50, y: 20 },
   ]);
+  const [strikes, setStrikes] = useState(0);
 
-  const updateRaindrops = raindrops => {
+  const updateRaindrops = (raindrops, strikes) => {
     setTimeout(() => {
       let newRaindrops = [];
       raindrops.forEach(raindrop => {
         let newPos = { ...raindrop };
         newPos.y++;
-        newRaindrops.push(newPos);
+        if (newPos.y < 800) {
+          newRaindrops.push(newPos);
+        } else {
+          setStrikes(strikes + 1);
+        }
       });
       if (Math.floor(Math.random() * Math.floor(100)) === 42) {
         newRaindrops.push({
@@ -38,14 +43,20 @@ const RaindropContainer = ({ width, height, loaded }) => {
     }, 50);
   };
 
+  const startGame = () => {
+    updateRaindrops(raindrops);
+    main();
+  };
+  console.log(strikes);
+
   return (
     <>
-      <StyledDiv>
+      <StyledDiv $width={width} $height={height}>
         {raindrops.map(raindrop => {
           return <Raindrop left={raindrop.x} top={raindrop.y} />;
         })}
       </StyledDiv>
-      <Button onClick={() => updateRaindrops(raindrops)}>Start Game</Button>
+      <Button onClick={() => startGame()}>Start Game</Button>
     </>
   );
 };

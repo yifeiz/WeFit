@@ -254,9 +254,10 @@ class PoseNet extends Component {
     findPoseDetectionFrame();
   }
 
-  async main() {
+  main = async () => {
     while (true) {
       const pose = await this.getPose();
+      console.log(pose);
       if (this.isWithinInterval(pose, this.pushupPos1)) {
         await this.checkPushup();
         await this.timeout(500);
@@ -268,7 +269,7 @@ class PoseNet extends Component {
         await this.timeout(500);
       }
     }
-  }
+  };
 
   async checkPushup() {
     console.log("1");
@@ -369,6 +370,7 @@ class PoseNet extends Component {
           width={this.props.videoWidth}
           height={this.props.videoHeight}
           loaded={this.state.loaded}
+          main={this.main}
         />
       </div>
     );
