@@ -3,6 +3,11 @@ import React, { Component } from "react";
 import * as posenet from "@tensorflow-models/posenet";
 import "@tensorflow/tfjs-backend-webgl";
 import RaindropContainer from "./RaindropContainer";
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
 
 class PoseNet extends Component {
   pushupPos1 = null;
@@ -290,7 +295,12 @@ class PoseNet extends Component {
     await this.timeout(500);
     return;
   }
-
+  async startRealTimer(){
+    while(this.state.timeTimer >0){
+      await this.setTimeout(1000);
+      this.setState({timeTimer:this.state.timeTimer-1});
+    }
+  }
   async checkSquat() {
     console.log("2");
 
@@ -367,7 +377,10 @@ class PoseNet extends Component {
       return false;
     }
   }
-
+  changeGameMode = (event) => {
+    console.log(event);
+    // this.setState({isStock:event.target.value})
+  };
   render() {
     return (
       <div>
@@ -386,9 +399,7 @@ class PoseNet extends Component {
         <p>squats: {this.state.squats}</p>
         </div>}
         
-        
-        {this.state.isCalibrated && 
-        <RaindropContainer
+          <RaindropContainer
           width={this.props.videoWidth}
           height={this.props.videoHeight}
           loaded={this.state.loaded}
@@ -396,7 +407,8 @@ class PoseNet extends Component {
           pushupCount={this.state.pushups}
           situpCount={this.state.situps}
           squatCount={this.state.squats}
-        />}
+          isCalibrated = {this.state.isCalibrated}
+        />
       </div>
     );
   }

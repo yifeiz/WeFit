@@ -12,7 +12,7 @@ const StyledDiv = styled.div`
   padding: 6px;
 `;
 
-const RaindropContainer = ({ width, height, loaded, main , pushupCount, situpCount, squatCount}) => {
+const RaindropContainer = ({ width, height, loaded, main , pushupCount, situpCount, squatCount, isCalibrated}) => {
   const [raindrops, setRaindrops] = useState([{ id: 1, x: 6, y: 0 }]);
   const [strikes, setStrikes] = useState(0);
 
