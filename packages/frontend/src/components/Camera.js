@@ -260,13 +260,10 @@ class PoseNet extends Component {
       console.log(pose);
       if (this.isWithinInterval(pose, this.pushupPos1)) {
         await this.checkPushup();
-        await this.timeout(500);
       } else if (this.isWithinInterval(pose, this.squatPos1)) {
         await this.checkSquat();
-        await this.timeout(500);
       } else if (this.isWithinInterval(pose, this.situpPos1)) {
         await this.checkSitup();
-        await this.timeout(500);
       }
     }
   };
@@ -275,17 +272,24 @@ class PoseNet extends Component {
     console.log("1");
     while (true) {
       const pose = await this.getPose();
+      if(this.isWithinInterval(pose, this.squatPos1) || this.isWithinInterval(pose,this.situpPos1)){
+        return;
+      }
       if (this.isWithinInterval(pose, this.pushupPos2)) {
         break;
       }
     }
     while (true) {
       const pose = await this.getPose();
+      if(this.isWithinInterval(pose, this.squatPos1) || this.isWithinInterval(pose,this.situpPos1)){
+        return;
+      }
       if (this.isWithinInterval(pose, this.pushupPos1)) {
         break;
       }
     }
     this.setState({ pushups: this.state.pushups + 1 });
+    await this.timeout(500);
     return;
   }
 
@@ -294,17 +298,24 @@ class PoseNet extends Component {
 
     while (true) {
       const pose = await this.getPose();
+      if(this.isWithinInterval(pose, this.pushupPos1) || this.isWithinInterval(pose,this.situpPos1)){
+        return;
+      }
       if (this.isWithinInterval(pose, this.squatPos2)) {
         break;
       }
     }
     while (true) {
       const pose = await this.getPose();
+      if(this.isWithinInterval(pose, this.pushupPos1) || this.isWithinInterval(pose,this.situpPos1)){
+        return;
+      }
       if (this.isWithinInterval(pose, this.squatPos1)) {
         break;
       }
     }
     this.setState({ squats: this.state.squats + 1 });
+    await this.timeout(500);
     return;
   }
 
@@ -313,17 +324,24 @@ class PoseNet extends Component {
 
     while (true) {
       const pose = await this.getPose();
+      if(this.isWithinInterval(pose, this.squatPos1) || this.isWithinInterval(pose,this.pushupPos1)){
+        return;
+      }
       if (this.isWithinInterval(pose, this.situpPos2)) {
         break;
       }
     }
     while (true) {
       const pose = await this.getPose();
+      if(this.isWithinInterval(pose, this.squatPos1) || this.isWithinInterval(pose,this.pushupPos1)){
+        return;
+      }
       if (this.isWithinInterval(pose, this.situpPos1)) {
         break;
       }
     }
     this.setState({ situps: this.state.situps + 1 });
+    await this.timeout(500);
     return;
   }
 
