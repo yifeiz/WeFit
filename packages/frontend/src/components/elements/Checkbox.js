@@ -29,7 +29,6 @@ const Checkbox = ({
 }) => {
 
   const classes = classNames(
-    'form-checkbox',
     className
   );
 

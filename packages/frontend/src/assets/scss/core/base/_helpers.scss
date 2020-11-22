@@ -83,20 +83,6 @@
 	color: color(success);
 }
 
-.invert-color {
-
-	.text-color-high {
-		color: color(high-contrast-inverse);
-	}
-
-	.text-color-mid {
-		color: color(mid-contrast-inverse);
-	}
-
-	.text-color-low {
-		color: color(low-contrast-inverse);
-	}
-}
 
 // Text transform
 .tt-u {
@@ -139,17 +125,6 @@ img.has-shadow {
 
 .has-bottom-divider {
     @include divider(after);
-}
-
-.invert-color {
-
-	.has-top-divider {
-	    @include divider(before, inverse);
-	}
-
-	.has-bottom-divider {
-	    @include divider(after, inverse);
-	}
 }
 
 // For centering content

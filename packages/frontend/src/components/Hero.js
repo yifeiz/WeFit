@@ -45,7 +45,6 @@ const Hero = ({
     topOuterDivider && 'has-top-divider',
     bottomOuterDivider && 'has-bottom-divider',
     hasBgColor && 'has-bg-color',
-    invertColor && 'invert-color',
     className
   );
 

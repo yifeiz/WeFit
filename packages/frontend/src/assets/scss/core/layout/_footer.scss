@@ -63,9 +63,6 @@
 		@include font-weight(footer-block-link);
 		text-transform: $link-footer-block--transform;
 
-		.invert-color & {
-			@include anchor-aspect(footer-block, inverse);
-		}
 	}
 }
 
@@ -75,10 +72,6 @@
 	color: color(block-title);
 	text-transform: $footer-block-title--transform;
 	margin-bottom: $footer-block-title-padding;
-
-	.invert-color & {
-		color: color(block-title-inverse);
-	}
 }
 
 .footer-social,
@@ -116,9 +109,6 @@
 			fill: color-icon(social);
 			transition: fill .15s ease;
 
-			.invert-color & {
-				fill: color-icon(social-inverse);
-			}
 		}
 
 		&:hover {
@@ -126,9 +116,6 @@
 			svg {
 				fill: color-icon(social-hover);
 
-				.invert-color & {
-					fill: color-icon(social-hover-inverse);
-				}
 			}
 		}
 	}
@@ -144,9 +131,6 @@
 		text-transform: $link-footer--transform;
 		padding: 0 $footer-nav--padding-h;
 
-		.invert-color & {
-			@include anchor-aspect(footer, inverse);
-		}
 	}
 }
 

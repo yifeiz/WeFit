@@ -199,64 +199,6 @@ strong {
 	@include font-weight(strong);
 }
 
-.invert-color {
-	color: color(base-inverse);
-
-	a {
-
-		&:not(.button) {
-			@include anchor-aspect(main, inverse);
-		}
-
-		&.button-link {
-			@include anchor-aspect(button-link, inverse);
-		}
-
-		&.func-link {
-			@include anchor-aspect(func-link, inverse);
-		}		
-	}
-
-	h1, h2, h3, h4, h5, h6,
-	.h1, .h2, .h3, .h4, .h5, .h6 {
-		color: color(heading-inverse);
-	}
-
-	address {
-		border-color: color-border(divider-inverse);
-	}
-
-	pre, code, kbd, tt, var {
-		background: color-bg(code-inverse);
-	}
-}
-
-@include media( '<=medium' ) {
-
-	.h1-mobile {
-		@include font-size(h1);
-	}
-
-	.h2-mobile {
-		@include font-size(h2);
-	}
-
-	.h3-mobile {
-		@include font-size(h3);
-	}
-
-	.h4-mobile {
-		@include font-size(h4);
-	}
-	
-	.h5-mobile {
-		@include font-size(base);
-	}
-	
-	.h6-mobile {
-		@include font-size(sm);
-	}
-}
 
 @include media( '>medium' ) {
 

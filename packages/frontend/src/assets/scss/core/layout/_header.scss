@@ -58,9 +58,6 @@
 		text-transform: $link-header--transform;
         padding: 0 $header-nav--padding-h;
 
-		.invert-color & {
-			@include anchor-aspect(header, inverse);
-		}
     }
 
 	a.button {
