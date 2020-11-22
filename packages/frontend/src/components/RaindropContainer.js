@@ -26,11 +26,8 @@ const RaindropContainer = ({
   startTimer,
   isStock,
   strikes,
-  setStrikes
+  setStrikes,
 }) => {
-
-  
-
   const [raindrops, setRaindrops] = useState([
     { exerciseType: PUSHUP, x: 6, y: 0 },
   ]);
@@ -91,7 +88,7 @@ const RaindropContainer = ({
         if (newPos.y < height - 100) {
           newRaindrops.push(newPos);
         } else {
-          if(isStock){
+          if (isStock) {
             setStrikes();
           }
         }
@@ -132,25 +129,24 @@ const RaindropContainer = ({
   if (!loaded) {
     return <CircularProgress />;
   }
-  else if (strikes >= 3) {
-    console.log("Stopped!");
-  }
 
   return (
     <>
-    {strikes < 3 && <StyledDiv $width={width} $height={height}>
-        {raindrops.map(raindrop => {
-          return (
-            <Raindrop
-              left={raindrop.x}
-              top={raindrop.y}
-              key={`${raindrop.exerciseType}-${raindrop.x}`}
-              exerciseType={raindrop.exerciseType}
-            />
-          );
-        })}
-      </StyledDiv>}
-      
+      {strikes < 3 && (
+        <StyledDiv $width={width} $height={height}>
+          {raindrops.map(raindrop => {
+            return (
+              <Raindrop
+                left={raindrop.x}
+                top={raindrop.y}
+                key={`${raindrop.exerciseType}-${raindrop.x}`}
+                exerciseType={raindrop.exerciseType}
+              />
+            );
+          })}
+        </StyledDiv>
+      )}
+
       <Button
         variant="outline-primary"
         style={{ marginTop: "12px", marginLeft: "15px" }}

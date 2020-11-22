@@ -5,7 +5,6 @@ import "@tensorflow/tfjs-backend-webgl";
 
 import RaindropContainer from "./RaindropContainer";
 import "../assets/css/Camera.css";
-import ButtonGroup from "./elements/ButtonGroup";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import goku from "../assets/images/goku.png";
@@ -17,7 +16,6 @@ import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
-import FormLabel from "@material-ui/core/FormLabel";
 
 class PoseNet extends Component {
   pushupPos1 = null;
@@ -174,15 +172,7 @@ class PoseNet extends Component {
   };
 
   async getPose() {
-    const {
-      algorithm,
-      imageScaleFactor,
-      flipHorizontal,
-      outputStride,
-      minPartConfidence,
-      maxPoseDetections,
-      nmsRadius,
-    } = this.props;
+    const { flipHorizontal } = this.props;
 
     const posenetModel = this.posenet;
     const video = this.video;
@@ -216,13 +206,9 @@ class PoseNet extends Component {
 
   poseDetectionFrame(canvasContext) {
     const {
-      imageScaleFactor,
       flipHorizontal,
-      outputStride,
       minPoseConfidence,
       minPartConfidence,
-      maxPoseDetections,
-      nmsRadius,
       videoWidth,
       videoHeight,
       showVideo,
@@ -315,10 +301,6 @@ class PoseNet extends Component {
       ) {
         return;
       }
-      if (this.state.strikes >= 3) {
-        this.handleShow();
-        return;
-      }
       if (this.isWithinInterval(pose, this.pushupPos2)) {
         break;
       }
@@ -329,10 +311,6 @@ class PoseNet extends Component {
         this.isWithinInterval(pose, this.squatPos1) ||
         this.isWithinInterval(pose, this.situpPos1)
       ) {
-        return;
-      }
-      if (this.state.strikes >= 3) {
-        this.handleShow();
         return;
       }
       if (this.isWithinInterval(pose, this.pushupPos1)) {
@@ -355,10 +333,6 @@ class PoseNet extends Component {
 
     while (true) {
       const pose = await this.getPose();
-      if (this.state.strikes >= 3) {
-        this.handleShow();
-        return;
-      }
       if (
         this.isWithinInterval(pose, this.pushupPos1) ||
         this.isWithinInterval(pose, this.situpPos1)
@@ -371,10 +345,6 @@ class PoseNet extends Component {
     }
     while (true) {
       const pose = await this.getPose();
-      if (this.state.strikes >= 3) {
-        this.handleShow();
-        return;
-      }
       if (
         this.isWithinInterval(pose, this.pushupPos1) ||
         this.isWithinInterval(pose, this.situpPos1)
@@ -396,10 +366,6 @@ class PoseNet extends Component {
 
     while (true) {
       const pose = await this.getPose();
-      if (this.state.strikes >= 3) {
-        this.handleShow();
-        return;
-      }
       if (
         this.isWithinInterval(pose, this.squatPos1) ||
         this.isWithinInterval(pose, this.pushupPos1)
@@ -412,10 +378,6 @@ class PoseNet extends Component {
     }
     while (true) {
       const pose = await this.getPose();
-      if (this.state.strikes >= 3) {
-        this.handleShow();
-        return;
-      }
       if (
         this.isWithinInterval(pose, this.squatPos1) ||
         this.isWithinInterval(pose, this.pushupPos1)
@@ -498,8 +460,19 @@ class PoseNet extends Component {
 
           <Modal show={this.state.showModal} onHide={this.handleClose}>
             <Modal.Header closeButton>
-              <Modal.Title>Good Try, try again...</Modal.Title>
+              <Modal.Title>Game over, Try again later</Modal.Title>
             </Modal.Header>
+            <Modal.Body>
+              Woohoo, you're reading this text in a modal!
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={this.handleClose}>
+                Close
+              </Button>
+              <Button variant="primary" onClick={this.handleClose}>
+                Save Changes
+              </Button>
+            </Modal.Footer>
           </Modal>
 
           <canvas className="webcam" ref={this.getCanvas} />

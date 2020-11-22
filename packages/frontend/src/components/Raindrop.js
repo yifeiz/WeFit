@@ -1,7 +1,7 @@
 import React from "react";
-import raindropBlue from "./raindrop-blue.png";
-import raindropRed from "./raindrop-red.png";
-import raindropGreen from "./raindrop-green.png";
+import raindropBlue from "../assets/images/raindrop-blue.png";
+import raindropRed from "../assets/images/raindrop-red.png";
+import raindropGreen from "../assets/images/raindrop-green.png";
 import { PUSHUP, SITUP, SQUAT } from "./types";
 
 const Raindrop = ({ top, left, exerciseType }) => {
@@ -21,7 +21,11 @@ const Raindrop = ({ top, left, exerciseType }) => {
   }
   return (
     <div style={{ top, left, position: "absolute" }}>
-      <img src={imgSrc} style={{ width: "50px", height: "100px" }} />
+      <img
+        src={imgSrc}
+        style={{ width: "50px", height: "100px" }}
+        alt="raindrop"
+      />
     </div>
   );
 };

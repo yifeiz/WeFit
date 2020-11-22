@@ -1,10 +1,10 @@
-import "./App.css";
+import "./assets/css/App.css";
 import Camera from "./components/Camera";
 import Header from "./components/Header";
-import { BrowserRouter as Router, Route, withRouter } from "react-router-dom";
+import { Route, withRouter } from "react-router-dom";
 import { Component } from "react";
-import Hero from "./components/Hero"
-import 'bootstrap/dist/css/bootstrap.min.css';
+import LandingPage from "./components/LandingPage";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 class App extends Component {
   render() {
@@ -12,12 +12,11 @@ class App extends Component {
       <div>
         <Header />
         <div className="App">
-          <Route path="/" exact strict component={Hero} />
+          <Route path="/" exact strict component={LandingPage} />
           <Route path="/game" exact strict component={Camera} />
         </div>
       </div>
     );
   }
-
 }
 export default withRouter(App);
