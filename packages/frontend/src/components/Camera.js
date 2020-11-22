@@ -121,9 +121,7 @@ class PoseNet extends Component {
       };
     });
   }
-  logPos() {
-    console.log("aiyahh");
-  }
+
   calculatePoints() {
     let points = 0;
     const PUSHPOINTS = 1000;
@@ -292,7 +290,6 @@ class PoseNet extends Component {
   };
 
   async checkPushup() {
-    console.log("1");
     while (true) {
       const pose = await this.getPose();
       if (
@@ -329,8 +326,6 @@ class PoseNet extends Component {
     }
   }
   async checkSquat() {
-    console.log("2");
-
     while (true) {
       const pose = await this.getPose();
       if (
@@ -362,8 +357,6 @@ class PoseNet extends Component {
   }
 
   async checkSitup() {
-    console.log("3");
-
     while (true) {
       const pose = await this.getPose();
       if (
@@ -421,7 +414,6 @@ class PoseNet extends Component {
 
   changeGameMode = event => {
     this.setState({ isStock: !this.state.isStock });
-    console.log(this.state.isStock);
   };
 
   setStrikes = () => {
@@ -462,17 +454,6 @@ class PoseNet extends Component {
             <Modal.Header closeButton>
               <Modal.Title>Game over, Try again later</Modal.Title>
             </Modal.Header>
-            <Modal.Body>
-              Woohoo, you're reading this text in a modal!
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={this.handleClose}>
-                Close
-              </Button>
-              <Button variant="primary" onClick={this.handleClose}>
-                Save Changes
-              </Button>
-            </Modal.Footer>
           </Modal>
 
           <canvas className="webcam" ref={this.getCanvas} />

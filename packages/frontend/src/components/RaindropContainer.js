@@ -33,11 +33,7 @@ const RaindropContainer = ({
   ]);
   const [isGameStarted, setGameStarted] = useState(false);
 
-  console.log(pushupCount, situpCount, squatCount);
-
   useEffect(() => {
-    console.log("Pushup detected");
-    console.log(raindrops);
     const index = raindrops.findIndex(
       raindrop => raindrop.exerciseType === PUSHUP
     );
@@ -51,7 +47,6 @@ const RaindropContainer = ({
   }, [pushupCount]);
 
   useEffect(() => {
-    console.log("Situp");
     const index = raindrops.findIndex(
       raindrop => raindrop.exerciseType === SITUP
     );
@@ -65,7 +60,6 @@ const RaindropContainer = ({
   }, [situpCount]);
 
   useEffect(() => {
-    console.log("Squat");
     const index = raindrops.findIndex(
       raindrop => raindrop.exerciseType === SQUAT
     );
