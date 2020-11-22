@@ -8,7 +8,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 const StyledDiv = styled.div`
   width: ${props => props.$width}px;
   height: ${props => props.$height}px;
-  top: 0;
+  top: 70px;
   position: fixed;
   padding: 6px;
 `;

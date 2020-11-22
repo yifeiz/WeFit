@@ -414,24 +414,16 @@ class PoseNet extends Component {
     }
   }
   changeGameMode = event => {
-    console.log(event);
-    // this.setState({isStock:event.target.value})
+    console.log(event.target.value);
+    this.setState({isStock:event.target.value})
   };
   render() {
     return (
-      <div>
-        <video id="videoNoShow" playsInline ref={this.getVideo} />
-        <canvas className="webcam" ref={this.getCanvas} />
-        
-        {this.state.isTimer && <p>time: {this.state.timer}</p>}
-        <h3>{this.state.label}</h3>
-        {this.state.isStartedGame && <div>
-        <p>situps: {this.state.situps}</p>
-        <p>pushups: {this.state.pushups}</p>
-        <p>squats: {this.state.squats}</p>
-        <p>Points: {this.state.totalPoints}</p>
-        </div>}
-        
+      <div className="cams">
+        <div className="left-side">
+          <video id="videoNoShow" playsInline ref={this.getVideo} />
+          <canvas className="webcam" ref={this.getCanvas} />
+          <br></br>
           <RaindropContainer
           width={this.props.videoWidth}
           height={this.props.videoHeight}
@@ -442,15 +434,32 @@ class PoseNet extends Component {
           squatCount={this.state.squats}
           startTimer={this.startTimer}
         />
+        <div>
+        <FormControl component="fieldset">
+      <FormLabel component="legend">Mode</FormLabel>
+      <RadioGroup aria-label="isStock" name="isStock" value={this.state.isStock} onChange={this.changeGameMode}>
+        <FormControlLabel value="true" control={<Radio />} label="Stock" />
+        <FormControlLabel value="false" control={<Radio />} label="Zen mode" />
+      </RadioGroup>
+    </FormControl>
+    </div>
         {this.state.isTimer && <p>time: {this.state.timer}</p>}
         <h3>{this.state.label}</h3>
-        {this.state.isStartedGame && (
-          <div>
-            <p>situps: {this.state.situps}</p>
-            <p>pushups: {this.state.pushups}</p>
-            <p>squats: {this.state.squats}</p>
+        </div>
+        <div className="right-side">
+          <div className="inner-right-side">
+            <div>
+              <h3 className="stats-title">Stats</h3>
+              <p className="stat-items">Situps: {this.state.situps}</p>
+              <p className="stat-items">Pushups: {this.state.pushups}</p>
+              <p className="stat-items">Squats: {this.state.squats}</p>
+              <p className="stat-items">Points: {this.state.totalPoints}</p>
+            </div>
+            <img src={nezuko} alt="Nezuko" className="nezuko" />
           </div>
-        )}
+        </div>
+        
+        
       </div>
     );
   }
