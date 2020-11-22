@@ -2,7 +2,7 @@ import { drawKeyPoints, drawSkeleton } from "./utils";
 import React, { Component } from "react";
 import * as posenet from "@tensorflow-models/posenet";
 import "@tensorflow/tfjs-backend-webgl";
-import CanvasContainer from "./CanvasContainer";
+import RaindropContainer from "./RaindropContainer";
 
 class PoseNet extends Component {
   static defaultProps = {
@@ -22,10 +22,7 @@ class PoseNet extends Component {
     skeletonLineWidth: 6,
     loadingText: "Loading...please be patient...",
   };
-
-  constructor(props) {
-    super(props, PoseNet.defaultProps);
-  }
+  state = { loaded: false };
 
   getCanvas = elem => {
     this.canvas = elem;
@@ -56,6 +53,8 @@ class PoseNet extends Component {
     }
 
     this.detectPose();
+    console.log("Blah");
+    this.setState({ loaded: true });
   }
 
   async setupCamera() {
@@ -167,7 +166,12 @@ class PoseNet extends Component {
     return (
       <div>
         <video id="videoNoShow" playsInline ref={this.getVideo} />
-        <CanvasContainer getCanvas={this.getCanvas} />
+        <canvas className="webcam" ref={this.getCanvas} />
+        <RaindropContainer
+          width={this.props.videoWidth}
+          height={this.props.videoHeight}
+          loaded={this.state.loaded}
+        />
       </div>
     );
   }
