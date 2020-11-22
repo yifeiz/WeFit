@@ -74,7 +74,6 @@ class PoseNet extends Component {
     }
 
     this.detectPose();
-    console.log("Blah");
     this.setState({ loaded: true });
   }
 
@@ -137,14 +136,12 @@ class PoseNet extends Component {
         label: `Now go into a ${posMapping[calibrationArray[posIdx]]}`,
       });
 
-      for (let i = 4; i >= 0; i--) {
+      for (let i = 1; i >= 0; i--) {
         await this.timeout(1000);
         this.setState({ timer: i, isTimer: true });
-        console.log(this.state);
       }
 
       this[calibrationArray[posIdx]] = await this.getPose();
-      console.log(this[calibrationArray[posIdx]]);
     }
     this.setState({ timer: 0, isTimer: false,label: "", isCalibrated:true  });
   }
@@ -256,10 +253,9 @@ class PoseNet extends Component {
   }
 
   main = async () => {
-    this.setState({isStartedGame:true});
+    this.setState({ isStartedGame: true });
     while (true) {
       const pose = await this.getPose();
-      console.log(pose);
       if (this.isWithinInterval(pose, this.pushupPos1)) {
         await this.checkPushup();
       } else if (this.isWithinInterval(pose, this.squatPos1)) {
@@ -384,15 +380,22 @@ class PoseNet extends Component {
         
         {this.state.isTimer && <p>time: {this.state.timer}</p>}
         <h3>{this.state.label}</h3>
-        {this.state.isStartedGame && <p>situps: {this.state.situps}</p>}
-        {this.state.isStartedGame && <p>pushups: {this.state.pushups}</p>}
-        {this.state.isStartedGame && <p>squats: {this.state.squats}</p>}
-        {this.state.isCalibrated &&
+        {this.state.isStartedGame && <div>
+        <p>situps: {this.state.situps}</p>
+        <p>pushups: {this.state.pushups}</p>
+        <p>squats: {this.state.squats}</p>
+        </div>}
+        
+        
+        {this.state.isCalibrated && 
         <RaindropContainer
           width={this.props.videoWidth}
           height={this.props.videoHeight}
           loaded={this.state.loaded}
           main={this.main}
+          pushupCount={this.state.pushups}
+          situpCount={this.state.situps}
+          squatCount={this.state.squats}
         />}
       </div>
     );
