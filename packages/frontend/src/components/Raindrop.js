@@ -5,7 +5,6 @@ import raindropGreen from "./raindrop-green.png";
 import { PUSHUP, SITUP, SQUAT } from "./types";
 
 const Raindrop = ({ top, left, exerciseType }) => {
-  console.log(exerciseType);
   let imgSrc;
 
   switch (exerciseType) {
