@@ -1,0 +1,56 @@
+.cams {
+    display: flex;
+    justify-content: center;
+}
+
+.webcam {
+    border-radius: 10px;
+    border: 2px solid white;
+}
+
+.right-side {
+    width: 40%;
+    margin-left: 40px;
+    padding-left: 30px;
+    background-color: #2f5597;
+    border-radius: 10px;
+    height: 604.5px;
+    padding-top: 20px;
+    border: 2px solid white;
+    color: white;
+}
+
+.inner-right-side {
+    display: flex;
+}
+
+.stats-title {
+    margin-top: 3px;
+    margin-bottom: 13px;
+    font-size: 42px;
+}
+
+.stat-items {
+    margin-bottom: 6px;
+    font-size: 25px;
+}
+
+.webcam {
+    padding: 0px;
+}
+
+.instructions {
+    margin-top: 2px;
+    margin-bottom: 0px;
+}
+
+.time {
+    margin-top: 8px;
+    margin-bottom: 0px;
+}
+
+.nezuko {
+    height: 500px;
+    margin-left: 60px;
+    margin-top: 30px;
+}

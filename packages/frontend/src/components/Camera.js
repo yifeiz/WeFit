@@ -4,6 +4,10 @@ import * as posenet from "@tensorflow-models/posenet";
 import "@tensorflow/tfjs-backend-webgl";
 
 import RaindropContainer from "./RaindropContainer";
+import '../assets/css/Camera.css';
+import ButtonGroup from './elements/ButtonGroup';
+import Button from 'react-bootstrap/Button'
+import nezuko from '../assets/images/nezuko.png';
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -18,8 +22,8 @@ class PoseNet extends Component {
   situpPos1 = null;
   situpPos2 = null;
   static defaultProps = {
-    videoWidth: 900,
-    videoHeight: 700,
+    videoWidth: 771,
+    videoHeight: 600,
     flipHorizontal: true,
     showVideo: true,
     showSkeleton: true,
