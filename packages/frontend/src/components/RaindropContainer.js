@@ -13,10 +13,7 @@ const StyledDiv = styled.div`
 `;
 
 const RaindropContainer = ({ width, height, main }) => {
-  const [raindrops, setRaindrops] = useState([
-    { id: 1, x: 6, y: 0 },
-    { id: 2, x: 50, y: 20 },
-  ]);
+  const [raindrops, setRaindrops] = useState([{ id: 1, x: 6, y: 0 }]);
   const [strikes, setStrikes] = useState(0);
 
   const updateRaindrops = (raindrops, strikes) => {
@@ -25,10 +22,11 @@ const RaindropContainer = ({ width, height, main }) => {
       raindrops.forEach(raindrop => {
         let newPos = { ...raindrop };
         newPos.y++;
-        if (newPos.y < 800) {
+        if (newPos.y < 600) {
           newRaindrops.push(newPos);
         } else {
-          setStrikes(strikes + 1);
+          strikes++;
+          setStrikes(strikes);
         }
       });
       if (Math.floor(Math.random() * Math.floor(100)) === 42) {
@@ -39,13 +37,13 @@ const RaindropContainer = ({ width, height, main }) => {
         });
       }
       setRaindrops(newRaindrops);
-      updateRaindrops(newRaindrops);
+      updateRaindrops(newRaindrops, strikes);
     }, 50);
   };
 
   const startGame = () => {
-    updateRaindrops(raindrops);
-    main();
+    updateRaindrops(raindrops, strikes);
+    // main();
   };
   console.log(strikes);
 
