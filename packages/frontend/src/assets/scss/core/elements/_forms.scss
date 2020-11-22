@@ -18,9 +18,7 @@ fieldset {
 }
 
 .form-input,
-.form-select,
-.form-checkbox input,
-.form-radio input {
+.form-select {
 	-moz-appearance: none;
 	-webkit-appearance: none;
 	background-color: color-bg(input);
@@ -157,67 +155,23 @@ textarea.form-input {
 	}
 }
 
-.form-checkbox,
-.form-radio,
+
 .form-switch {
     cursor: pointer;
 }
 
-.form-checkbox,
-.form-radio,
+
 .form-switch,
 .form-slider {
 	@include font-size(check-radio);
     @include font-weight(check-radio);
 }
 
-.form-checkbox,
-.form-radio {
-	color: color(check-radio);
-}
 
-.form-checkbox,
-.form-radio {
-    position: relative;
-	padding-left: 24px;
 
-	input {
-		position: absolute;
-		left: 0;
-		top: ( ( get-line-height(check-radio) - 16 ) / 2 ) - 1; // -1 is for optical adjustement
-		width: 16px;
-		height: 16px;
-		cursor: pointer;
 
-		&:checked {
-			background-color: color-bg(check-radio-checked) !important;
-			border-color: color-bg(check-radio-checked) !important;
-			background-position: 50%;
-		}
-	}
-}
 
-.form-checkbox {
 
-	input {
-		border-radius: 2px;
-
-		&:checked {
-			background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iMTQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+IDxwYXRoIGQ9Ik0xMS40IDVMMTAgMy42bC00IDQtMi0yTDIuNiA3IDYgMTAuNHoiIGZpbGw9IiNGRkYiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==);
-		}
-	}
-}
-
-.form-radio {
-
-	input {
-		border-radius: 50%;
-
-		&:checked {
-			background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iMTQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBmaWxsPSIjRkZGIiBjeD0iNyIgY3k9IjciIHI9IjMiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==);
-		}
-	}
-}
 
 .form-switch {
     display: inline-flex;
@@ -342,112 +296,6 @@ textarea.form-input {
             border: 0;
         }
     }
-}
-
-.invert-color {
-
-    .form-label,
-    .form-switch,
-    .form-slider {
-		color: color(label-inverse);
-	}
-
-	.form-input,
-	.form-select,
-	.form-checkbox input,
-	.form-radio input {
-		background-color: color-bg(input-inverse);
-		border-color: color-border(input-inverse);
-
-		&:hover {
-			border-color: color-border(input-hover-inverse);
-		}
-
-		&:active,
-		&:focus {
-			border-color: color-border(input-focus-inverse);
-			background-color: color-bg(input-focus-inverse);
-		}
-
-		&[disabled] {
-			background-color: color-bg(input-disabled-inverse);
-			border-color: color-border(input-disabled-inverse);
-		}
-	}
-
-	.form-input,
-	.form-select {
-	    color: color(input-inverse);
-	}
-
-	.form-input {
-
-	    &::placeholder {
-	        color: color(input-ph-inverse);
-	    }
-
-	    &::-ms-input-placeholder {
-	        color: color(input-ph-inverse);
-	    }
-	}
-
-	.form-select {
-	    background-image: inline-svg('<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><path d="M8 11.4L2.6 6 4 4.6l4 4 4-4L13.4 6 8 11.4z" fill="' + color-icon(select-arrow-inverse) + '" fill-rule="evenodd"/></svg>');
-    }
-    
-    .form-checkbox,
-    .form-radio {
-        color: color(check-radio-inverse);
-    }
-
-	.form-checkbox,
-	.form-radio {
-
-		input {
-
-			&:checked {
-				background-color: color-bg(check-checked-inverse) !important;
-				border-color: color-bg(check-checked-inverse) !important;
-			}
-		}
-	}
-
-	.form-switch {
-
-		.form-switch-icon {
-			background: color-bg(switch-inverse);
-
-		}
-
-		input:checked {
-
-			+ .form-switch-icon {
-				background: color-bg(switch-checked-inverse);
-			}
-		}
-    }
-    
-    .form-slider {
-
-        input[type=range] {
-            background: color-bg(range-track-inverse);
-
-            &::-webkit-slider-thumb {
-                background-color: color-bg(range-thumb-inverse);
-                background-image: inline-svg('<svg width="12" height="8" xmlns="http://www.w3.org/2000/svg"><path d="M8 .5v7L12 4zM0 4l4 3.5v-7z" fill="' + color-icon(range-inverse) + '" fill-rule="nonzero"/></svg>');
-            }
-
-            &::-moz-range-thumb {
-                background-color: color-bg(range-thumb-inverse);
-                background-image: inline-svg('<svg width="12" height="8" xmlns="http://www.w3.org/2000/svg"><path d="M8 .5v7L12 4zM0 4l4 3.5v-7z" fill="' + color-icon(range-inverse) + '" fill-rule="nonzero"/></svg>');
-            }
-            
-            &::-ms-thumb {
-                background-color: color-bg(range-thumb-inverse);
-                background-image: inline-svg('<svg width="12" height="8" xmlns="http://www.w3.org/2000/svg"><path d="M8 .5v7L12 4zM0 4l4 3.5v-7z" fill="' + color-icon(range-inverse) + '" fill-rule="nonzero"/></svg>');
-            }           
-        }
-    }    
 }
 
 .form-group {

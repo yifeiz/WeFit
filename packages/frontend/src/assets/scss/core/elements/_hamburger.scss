@@ -27,9 +27,6 @@
 	background: color-icon(hamburger);
 	border-radius: $header-hamburger--radius;
 
-	.invert-color & {
-		background: color-icon(hamburger-inverse);
-	}
 }
 
 .hamburger-inner {
