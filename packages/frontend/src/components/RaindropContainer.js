@@ -13,7 +13,16 @@ const StyledDiv = styled.div`
   padding: 6px;
 `;
 
-const RaindropContainer = ({ width, height, loaded, main }) => {
+const RaindropContainer = ({
+  width,
+  height,
+  loaded,
+  main,
+  pushupCount,
+  situpCount,
+  squatCount,
+  startTimer,
+}) => {
   const [raindrops, setRaindrops] = useState([{ id: 1, x: 6, y: 0 }]);
   const [strikes, setStrikes] = useState(0);
   const [isGameStarted, setGameStarted] = useState(false);
@@ -44,13 +53,13 @@ const RaindropContainer = ({ width, height, loaded, main }) => {
     return () => {
       clearTimeout(timer);
     };
-  }, [loaded, raindrops, strikes]);
+  }, [isGameStarted, raindrops, strikes]);
 
-  const startGame = () => {
-    // updateRaindrops(raindrops, strikes);
+  const startGame = async () => {
+    await startTimer();
+    setGameStarted(true);
     main();
   };
-  console.log(loaded);
   if (!loaded) {
     return <CircularProgress />;
   }

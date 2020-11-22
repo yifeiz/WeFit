@@ -4,6 +4,11 @@ import * as posenet from "@tensorflow-models/posenet";
 import "@tensorflow/tfjs-backend-webgl";
 
 import RaindropContainer from "./RaindropContainer";
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormControl from "@material-ui/core/FormControl";
+import FormLabel from "@material-ui/core/FormLabel";
 
 class PoseNet extends Component {
   pushupPos1 = null;
@@ -42,6 +47,7 @@ class PoseNet extends Component {
     totalStocks: 3,
     isStartedGame: false,
     isCalibrated: false,
+    isCalibrating: false,
   };
 
   getCanvas = elem => {
@@ -74,7 +80,6 @@ class PoseNet extends Component {
     }
 
     this.detectPose();
-    console.log("Blah");
     this.setState({ loaded: true });
   }
 
@@ -110,8 +115,8 @@ class PoseNet extends Component {
     console.log("aiyahh");
   }
 
-  async startTimer() {
-    this.setState({ isCalibrated: true });
+  startTimer = async () => {
+    this.setState({ isCalibrating: true });
     let calibrationArray = [
       "pushupPos1",
       "pushupPos2",
@@ -137,20 +142,15 @@ class PoseNet extends Component {
         label: `Now go into a ${posMapping[calibrationArray[posIdx]]}`,
       });
 
-      for (let i = 4; i >= 0; i--) {
+      for (let i = 1; i >= 0; i--) {
         await this.timeout(1000);
         this.setState({ timer: i, isTimer: true });
-        console.log(this.state);
       }
 
       this[calibrationArray[posIdx]] = await this.getPose();
-      console.log(this[calibrationArray[posIdx]]);
     }
-    this.setState({ timer: 0, isTimer: false });
-
-    // remove the label
-    this.setState({ label: "" });
-  }
+    this.setState({ timer: 0, isTimer: false, label: "", isCalibrated: true });
+  };
 
   async getPose() {
     const {
@@ -262,7 +262,6 @@ class PoseNet extends Component {
     this.setState({ isStartedGame: true });
     while (true) {
       const pose = await this.getPose();
-      console.log(pose);
       if (this.isWithinInterval(pose, this.pushupPos1)) {
         await this.checkPushup();
       } else if (this.isWithinInterval(pose, this.squatPos1)) {
@@ -303,7 +302,12 @@ class PoseNet extends Component {
     await this.timeout(500);
     return;
   }
-
+  async startRealTimer() {
+    while (this.state.timeTimer > 0) {
+      await this.setTimeout(1000);
+      this.setState({ timeTimer: this.state.timeTimer - 1 });
+    }
+  }
   async checkSquat() {
     console.log("2");
 
@@ -392,7 +396,10 @@ class PoseNet extends Component {
       return false;
     }
   }
-
+  changeGameMode = event => {
+    console.log(event);
+    // this.setState({isStock:event.target.value})
+  };
   render() {
     return (
       <div>
@@ -403,19 +410,20 @@ class PoseNet extends Component {
           height={this.props.videoHeight}
           loaded={this.state.loaded}
           main={this.main}
+          pushupCount={this.state.pushups}
+          situpCount={this.state.situps}
+          squatCount={this.state.squats}
+          startTimer={this.startTimer}
         />
-        <br></br>
-        {!this.state.isCalibrated && (
-          <button onClick={() => this.startTimer()}>
-            Start Calibration System
-          </button>
-        )}
-
         {this.state.isTimer && <p>time: {this.state.timer}</p>}
         <h3>{this.state.label}</h3>
-        {this.state.isStartedGame && <p>situps: {this.state.situps}</p>}
-        {this.state.isStartedGame && <p>pushups: {this.state.pushups}</p>}
-        {this.state.isStartedGame && <p>squats: {this.state.squats}</p>}
+        {this.state.isStartedGame && (
+          <div>
+            <p>situps: {this.state.situps}</p>
+            <p>pushups: {this.state.pushups}</p>
+            <p>squats: {this.state.squats}</p>
+          </div>
+        )}
       </div>
     );
   }
