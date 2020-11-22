@@ -3,6 +3,7 @@ import Raindrop from "./Raindrop";
 
 import Button from "@material-ui/core/Button";
 import styled from "styled-components";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const StyledDiv = styled.div`
   width: ${props => props.$width}px;
@@ -12,12 +13,14 @@ const StyledDiv = styled.div`
   padding: 6px;
 `;
 
-const RaindropContainer = ({ width, height, main }) => {
+const RaindropContainer = ({ width, height, loaded, main }) => {
   const [raindrops, setRaindrops] = useState([{ id: 1, x: 6, y: 0 }]);
   const [strikes, setStrikes] = useState(0);
+  const [isGameStarted, setGameStarted] = useState(false);
 
-  const updateRaindrops = (raindrops, strikes) => {
-    setTimeout(() => {
+  useEffect(() => {
+    if (!isGameStarted) return;
+    let timer = setTimeout(() => {
       let newRaindrops = [];
       raindrops.forEach(raindrop => {
         let newPos = { ...raindrop };
@@ -25,8 +28,7 @@ const RaindropContainer = ({ width, height, main }) => {
         if (newPos.y < 600) {
           newRaindrops.push(newPos);
         } else {
-          strikes++;
-          setStrikes(strikes);
+          setStrikes(strikes + 1);
         }
       });
       if (Math.floor(Math.random() * Math.floor(100)) === 42) {
@@ -37,15 +39,21 @@ const RaindropContainer = ({ width, height, main }) => {
         });
       }
       setRaindrops(newRaindrops);
-      updateRaindrops(newRaindrops, strikes);
     }, 50);
-  };
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [loaded, raindrops, strikes]);
 
   const startGame = () => {
-    updateRaindrops(raindrops, strikes);
-    // main();
+    // updateRaindrops(raindrops, strikes);
+    main();
   };
-  console.log(strikes);
+  console.log(loaded);
+  if (!loaded) {
+    return <CircularProgress />;
+  }
 
   return (
     <>

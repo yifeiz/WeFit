@@ -2,6 +2,7 @@ import { drawKeyPoints, drawSkeleton } from "./utils";
 import React, { Component } from "react";
 import * as posenet from "@tensorflow-models/posenet";
 import "@tensorflow/tfjs-backend-webgl";
+
 import RaindropContainer from "./RaindropContainer";
 
 class PoseNet extends Component {
@@ -36,11 +37,11 @@ class PoseNet extends Component {
     situps: 0,
     squats: 0,
     pushups: 0,
-    isStock:false,
-    timeTimer:120,
-    totalStocks:3,
-    isStartedGame:false,
-    isCalibrated:false
+    isStock: false,
+    timeTimer: 120,
+    totalStocks: 3,
+    isStartedGame: false,
+    isCalibrated: false,
   };
 
   getCanvas = elem => {
@@ -110,7 +111,7 @@ class PoseNet extends Component {
   }
 
   async startTimer() {
-    this.setState({isCalibrated:true});
+    this.setState({ isCalibrated: true });
     let calibrationArray = [
       "pushupPos1",
       "pushupPos2",
@@ -258,7 +259,7 @@ class PoseNet extends Component {
   }
 
   main = async () => {
-    this.setState({isStartedGame:true});
+    this.setState({ isStartedGame: true });
     while (true) {
       const pose = await this.getPose();
       console.log(pose);
@@ -276,7 +277,10 @@ class PoseNet extends Component {
     console.log("1");
     while (true) {
       const pose = await this.getPose();
-      if(this.isWithinInterval(pose, this.squatPos1) || this.isWithinInterval(pose,this.situpPos1)){
+      if (
+        this.isWithinInterval(pose, this.squatPos1) ||
+        this.isWithinInterval(pose, this.situpPos1)
+      ) {
         return;
       }
       if (this.isWithinInterval(pose, this.pushupPos2)) {
@@ -285,7 +289,10 @@ class PoseNet extends Component {
     }
     while (true) {
       const pose = await this.getPose();
-      if(this.isWithinInterval(pose, this.squatPos1) || this.isWithinInterval(pose,this.situpPos1)){
+      if (
+        this.isWithinInterval(pose, this.squatPos1) ||
+        this.isWithinInterval(pose, this.situpPos1)
+      ) {
         return;
       }
       if (this.isWithinInterval(pose, this.pushupPos1)) {
@@ -302,7 +309,10 @@ class PoseNet extends Component {
 
     while (true) {
       const pose = await this.getPose();
-      if(this.isWithinInterval(pose, this.pushupPos1) || this.isWithinInterval(pose,this.situpPos1)){
+      if (
+        this.isWithinInterval(pose, this.pushupPos1) ||
+        this.isWithinInterval(pose, this.situpPos1)
+      ) {
         return;
       }
       if (this.isWithinInterval(pose, this.squatPos2)) {
@@ -311,7 +321,10 @@ class PoseNet extends Component {
     }
     while (true) {
       const pose = await this.getPose();
-      if(this.isWithinInterval(pose, this.pushupPos1) || this.isWithinInterval(pose,this.situpPos1)){
+      if (
+        this.isWithinInterval(pose, this.pushupPos1) ||
+        this.isWithinInterval(pose, this.situpPos1)
+      ) {
         return;
       }
       if (this.isWithinInterval(pose, this.squatPos1)) {
@@ -328,7 +341,10 @@ class PoseNet extends Component {
 
     while (true) {
       const pose = await this.getPose();
-      if(this.isWithinInterval(pose, this.squatPos1) || this.isWithinInterval(pose,this.pushupPos1)){
+      if (
+        this.isWithinInterval(pose, this.squatPos1) ||
+        this.isWithinInterval(pose, this.pushupPos1)
+      ) {
         return;
       }
       if (this.isWithinInterval(pose, this.situpPos2)) {
@@ -337,7 +353,10 @@ class PoseNet extends Component {
     }
     while (true) {
       const pose = await this.getPose();
-      if(this.isWithinInterval(pose, this.squatPos1) || this.isWithinInterval(pose,this.pushupPos1)){
+      if (
+        this.isWithinInterval(pose, this.squatPos1) ||
+        this.isWithinInterval(pose, this.pushupPos1)
+      ) {
         return;
       }
       if (this.isWithinInterval(pose, this.situpPos1)) {
@@ -379,23 +398,24 @@ class PoseNet extends Component {
       <div>
         <video id="videoNoShow" playsInline ref={this.getVideo} />
         <canvas className="webcam" ref={this.getCanvas} />
-        <br></br>
-        {!this.state.isCalibrated && <button onClick={() => this.startTimer()}>
-          Start Calibration System
-        </button>}
-        
-        {this.state.isTimer && <p>time: {this.state.timer}</p>}
-        <h3>{this.state.label}</h3>
-        {this.state.isStartedGame && <p>situps: {this.state.situps}</p>}
-        {this.state.isStartedGame && <p>pushups: {this.state.pushups}</p>}
-        {this.state.isStartedGame && <p>squats: {this.state.squats}</p>}
-        {this.state.isCalibrated &&
         <RaindropContainer
           width={this.props.videoWidth}
           height={this.props.videoHeight}
           loaded={this.state.loaded}
           main={this.main}
-        />}
+        />
+        <br></br>
+        {!this.state.isCalibrated && (
+          <button onClick={() => this.startTimer()}>
+            Start Calibration System
+          </button>
+        )}
+
+        {this.state.isTimer && <p>time: {this.state.timer}</p>}
+        <h3>{this.state.label}</h3>
+        {this.state.isStartedGame && <p>situps: {this.state.situps}</p>}
+        {this.state.isStartedGame && <p>pushups: {this.state.pushups}</p>}
+        {this.state.isStartedGame && <p>squats: {this.state.squats}</p>}
       </div>
     );
   }
