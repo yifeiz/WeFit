@@ -326,13 +326,13 @@ class PoseNet extends Component {
   async checkSquat(){
     while(true){
       const pose = await this.getPose()
-      if(this.isWithinInterval(pose,this.squatPos1)){
+      if(this.isWithinInterval(pose,this.squatPos2)){
         break;
       }
     }
     while(true){
       const pose = await this.getPose()
-        if(this.isWithinInterval(pose,this.squatPos2)){
+        if(this.isWithinInterval(pose,this.squatPos1)){
             break;
         }
     }
@@ -342,13 +342,13 @@ class PoseNet extends Component {
   async checkSitup(){
     while(true){
       const pose = await this.getPose()
-      if(this.isWithinInterval(pose,this.situpPos1)){
+      if(this.isWithinInterval(pose,this.situpPos2)){
         break;
       }
     }
     while(true){
       const pose = await this.getPose()
-        if(this.isWithinInterval(pose,this.situpPos2)){
+        if(this.isWithinInterval(pose,this.situpPos1)){
             break;
         }
     }
