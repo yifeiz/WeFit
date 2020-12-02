@@ -3,7 +3,7 @@ import classNames from "classnames";
 import { SectionProps } from "./elements/SectionProps";
 import Button from "./elements/Button";
 import logo from "../assets/images/wefit.png";
-import "../assets/css/Hero.css";
+import "../assets/css/LandingPage.css";
 import { Link } from "react-router-dom";
 
 const propTypes = {
