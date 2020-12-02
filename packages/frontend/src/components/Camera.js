@@ -5,7 +5,6 @@ import "@tensorflow/tfjs-backend-webgl";
 
 import RaindropContainer from "./RaindropContainer";
 import "../assets/css/Camera.css";
-import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import goku from "../assets/images/goku.png";
 import fox from "../assets/images/mishoncomplete.png";

@@ -12,11 +12,16 @@ class Header extends Component {
           <img className="logo" src={logo} alt="Logo" />
         </Link>
         <Nav className="mr-auto">
-          <Nav.Link style={{ color: "white" }}>
-            <Link to="/">Home</Link>
+          <Nav.Link as={Link} to="/" style={{ color: "white" }}>
+            Home
           </Nav.Link>
-          <Nav.Link href="#features" style={{ color: "white" }}>
-            <Link to="/game">Game</Link>
+          <Nav.Link
+            as={Link}
+            to="/game"
+            href="#features"
+            style={{ color: "white" }}
+          >
+            Game
           </Nav.Link>
         </Nav>
       </Navbar>
